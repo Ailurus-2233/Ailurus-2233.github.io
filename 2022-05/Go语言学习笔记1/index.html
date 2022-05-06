@@ -1,0 +1,987 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/system/icon.jpg">
+  <link rel="icon" href="/images/system/icon.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Ailurus">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="整理学习go基础的过程中，一些基础语法以及相关的问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go语言学习笔记-变量、常量、数据类型">
+<meta property="og:url" content="http://blog.ailurus2233.site/2022-05/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01/index.html">
+<meta property="og:site_name" content="Ailurusの客栈">
+<meta property="og:description" content="整理学习go基础的过程中，一些基础语法以及相关的问题">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-06T03:43:17.000Z">
+<meta property="article:modified_time" content="2022-05-06T07:29:33.264Z">
+<meta property="article:tag" content="Go">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>Go语言学习笔记-变量、常量、数据类型 - Ailurusの客栈</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"blog.ailurus2233.site","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"|","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ailurus&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/system/background.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Go语言学习笔记-变量、常量、数据类型">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Ailurus
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-05-06 11:43" pubdate>
+        2022年5月6日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      12k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      100 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Go语言学习笔记-变量、常量、数据类型</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年5月6日 下午
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="变量声明">变量声明</h1>
+<p>在编程语言中，为了方便操作内存特定位置的数据，我们用一个特定的名字与位于特定位置的内存块绑定在一起，这个名字被称为变量，变量所绑定的内存区域是要有一个明确的边界的。动态语言（比如
+Python、Ruby
+等）的解释器可以在运行时通过对变量赋值的分析，自动确定变量的边界。并且在动态语言中，一个变量可以在运行时被赋予大小不同的边界。而静态编程语言在这方面的“体验略差”。静态类型语言编译器必须明确知道一个变量的边界才允许使用这个变量，但静态语言编译器又没能力自动提供这个信息，这个边界信息必须由这门语言的使用者提供，于是就有了“变量声明”。</p>
+<h2 id="go-语言的变量声明方法">Go 语言的变量声明方法</h2>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> a <span class="hljs-type">int</span> = <span class="hljs-number">10</span><br></code></pre></div></td></tr></table></figure>
+<p>这个变量声明分为四个部分：var 是修饰变量声明的关键字；a 为变量名；int
+为该变量的类型；10 是变量的初值。Go
+语言的变量声明形式与其他主流静态语言有一个显著的差异，那就是它将变量名放在了类型的前面。如果没有显式为变量赋予初值，Go
+编译器会为变量赋予这个类型的零值。对于整数类型，零值为0；浮点数，零值为0.0；布尔类型，零值为False；字符串类型，零值为""；指针，接口，切片，channel，map和函数类型，零值为nil。</p>
+<p>除了单独声明每个变量外，Go
+语言还提供了变量声明块（block）的语法形式，可以用一个 var
+关键字将多个变量声明放在一起，像下面代码这样：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> (<br>    a <span class="hljs-type">int</span> = <span class="hljs-number">128</span><br>    b <span class="hljs-type">int8</span> = <span class="hljs-number">6</span><br>    s <span class="hljs-type">string</span> = <span class="hljs-string">&quot;hello&quot;</span><br>    c <span class="hljs-type">rune</span> = <span class="hljs-string">&#x27;A&#x27;</span><br>    t <span class="hljs-type">bool</span> = <span class="hljs-literal">true</span><br>)<br><br><br><span class="hljs-keyword">var</span> a, b, c <span class="hljs-type">int</span> = <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span><br><br><br><span class="hljs-keyword">var</span> (<br>    a, b, c <span class="hljs-type">int</span> = <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span><br>    c, d, e <span class="hljs-type">rune</span> = <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span><br>) <br></code></pre></div></td></tr></table></figure>
+<h2 id="go语言的语法糖">go语言的语法糖</h2>
+<h3 id="省略类型信息的声明">省略类型信息的声明</h3>
+<p>在通用的变量声明的基础上，Go
+编译器允许我们省略变量声明中的类型信息，它的标准范式是<code>var varName = initExpression</code>，比如下面就是一个省略了类型信息的变量声明：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> b = <span class="hljs-number">13</span><br></code></pre></div></td></tr></table></figure>
+<p>Go
+编译器会根据右侧变量初值自动推导出变量的类型，并给这个变量赋予初值所对应的默认类型。比如，整型值的默认类型
+int，浮点值的默认类型为 float64，复数值的默认类型为
+complex128。其他类型值的默认类型就更好分辨了，在 Go
+语言中仅有唯一与之对应的类型，比如布尔值的默认类型只能是
+bool，字符值默认类型只能是 rune，字符串值的默认类型只能是 string
+等。</p>
+<p>如果我们不接受默认类型，而是要显式地为变量指定类型，除了通用的声明形式，我们还可以通过显式类型转型达到我们的目的：
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> b = <span class="hljs-type">int32</span>(<span class="hljs-number">13</span>)<br></code></pre></div></td></tr></table></figure></p>
+<p>但是这种省略类型信息声明的“语法糖”仅适用于在变量声明的同时显式赋予变量初值的情况，下面这种没有初值的声明形式是不被允许的：
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> b<br></code></pre></div></td></tr></table></figure></p>
+<p>结合多变量声明，我们可以使用这种变量声明“语法糖”声明多个不同类型的变量：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> a, b, c = <span class="hljs-number">12</span>, <span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&quot;hello&quot;</span><br></code></pre></div></td></tr></table></figure>
+<h3 id="短变量声明">短变量声明</h3>
+<p>Go
+语言还为我们提供了最简化的变量声明形式：短变量声明。使用短变量声明时，我们甚至可以省去
+var
+关键字以及类型信息，它的标准范式是<code>varName := initExpression</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go">a := <span class="hljs-number">12</span><br>b := <span class="hljs-string">&#x27;A&#x27;</span><br>c := <span class="hljs-string">&quot;hello&quot;</span><br></code></pre></div></td></tr></table></figure>
+<p>短变量声明将通用变量声明中的四个部分省去了两个，但它并没有使用赋值操作符<code>=</code>，而是使用了短变量声明专用的<code>:=</code>。这个原理和上一种省略类型信息的声明语法糖一样，短变量声明中的变量类型也是由
+Go 编译器自动推导出来的。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go">a, b, c := <span class="hljs-number">12</span>, <span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&quot;hello&quot;</span><br></code></pre></div></td></tr></table></figure>
+<h1 id="常量声明">常量声明</h1>
+<p>go语言中常量的特点： * 支持无类型常量； * 支持隐式自动转型； *
+可用于实现枚举。</p>
+<p>Go
+语言的常量是一种在源码编译期间被创建的语法元素。这是在说这个元素的值可以像变量那样被初始化，但它的初始化表达式必须是在编译期间可以求出值来的。而且，Go
+常量一旦声明并被初始化后，它的值在整个程序的生命周期内便保持不变。这样，我们在并发设计时就不用考虑常量访问的同步，并且被创建并初始化后的常量还可以作为其他常量的初始表达式的一部分。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">const</span> Pi <span class="hljs-type">float64</span> = <span class="hljs-number">3.14159265358979323846</span> <span class="hljs-comment">// 单行常量声明</span><br><br><span class="hljs-comment">// 以const代码块形式声明常量</span><br><span class="hljs-keyword">const</span> (<br>    size <span class="hljs-type">int64</span> = <span class="hljs-number">4096</span><br>    i, j, s = <span class="hljs-number">13</span>, <span class="hljs-number">14</span>, <span class="hljs-string">&quot;bar&quot;</span> <span class="hljs-comment">// 单行声明多个常量</span><br>)<br></code></pre></div></td></tr></table></figure>
+<p>Go 语言规范规定，Go 常量的类型只局限于 Go
+基本数据类型，包括数值类型、字符串类型，以及只有两个取值（true 和
+false）的布尔类型。</p>
+<h2 id="无类型常量">无类型常量</h2>
+<p>声明方式 <figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">const</span> n = <span class="hljs-number">13</span><br></code></pre></div></td></tr></table></figure></p>
+<p>常量 n 在声明时并没有显式地被赋予类型，在 Go
+中，这样的常量就被称为无类型常量（Untyped
+Constant）。不过，无类型常量也不是说就真的没有类型，它也有自己的默认类型，不过它的默认类型是根据它的初值形式来决定的。像上面代码中的常量
+n 的初值为整数形式，所以它的默认类型为 int。</p>
+<p><strong>Go
+语言对类型安全是有严格要求的：即便两个类型拥有着相同的底层类型，但它们仍然是不同的数据类型，不可以被相互比较或混在一个表达式中进行运算。</strong></p>
+<p>但是对于无类型常量，以下代码是可以编译通过的 <figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> myInt <span class="hljs-type">int</span><br><span class="hljs-keyword">const</span> n = <span class="hljs-number">13</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> a myInt = <span class="hljs-number">5</span><br>    fmt.Println(a + n)  <span class="hljs-comment">// 输出：18</span><br>&#125;<br></code></pre></div></td></tr></table></figure></p>
+<p>因为这里存在一个隐式转型的机制</p>
+<h3 id="隐式转型">隐式转型</h3>
+<p>隐式转型说的就是，对于无类型常量参与的表达式求值，Go
+编译器会根据上下文中的类型信息，把无类型常量自动转换为相应的类型后，再参与求值计算，这一转型动作是隐式进行的。但由于转型的对象是一个常量，所以这并不会引发类型安全问题，Go
+编译器会保证这一转型的安全性。</p>
+<p>不过隐式转型中，无法转化成目标类型会报错误 <figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">const</span> m = <span class="hljs-number">1333333333</span><br><br><span class="hljs-keyword">var</span> k <span class="hljs-type">int8</span> = <span class="hljs-number">1</span><br>j := k + m <span class="hljs-comment">// 编译器报错：constant 1333333333 overflows int8</span><br></code></pre></div></td></tr></table></figure></p>
+<h2 id="实现枚举">实现枚举</h2>
+<p>Go 语言并没有原生提供枚举类型，但是我们可以使用 const
+代码块定义的常量集合，来实现枚举。</p>
+<h3 id="两个机制">两个机制</h3>
+<p><strong>隐式重复前一个非空表达式</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">const</span> (<br>    Apple, Banana = <span class="hljs-number">11</span>, <span class="hljs-number">22</span><br>    Strawberry, Grape <br>    Pear, Watermelon <br>)<br></code></pre></div></td></tr></table></figure>
+<p>这个代码里，常量定义的后两行并没有被显式地赋予初始值，所以 Go
+编译器就为它们自动使用上一行的表达式，也就获得了下面这个等价的代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">const</span> (<br>    Apple, Banana = <span class="hljs-number">11</span>, <span class="hljs-number">22</span><br>    Strawberry, Grape  = <span class="hljs-number">11</span>, <span class="hljs-number">22</span> <span class="hljs-comment">// 使用上一行的初始化表达式</span><br>    Pear, Watermelon  = <span class="hljs-number">11</span>, <span class="hljs-number">22</span> <span class="hljs-comment">// 使用上一行的初始化表达式</span><br>)<br></code></pre></div></td></tr></table></figure>
+<p><strong>iota</strong></p>
+<p>iota 是 Go 语言的一个预定义标识符，它表示的是 const
+声明块（包括单行声明）中，每个常量所处位置在块中的偏移值（从零开始）。同时，每一行中的
+iota
+自身也是一个无类型常量，可以像前面我们提到的无类型常量那样，自动参与到不同类型的求值过程中来，不需要我们再对它进行显式转型操作。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOROOT/src/sync/mutex.go </span><br><span class="hljs-keyword">const</span> ( <br>    mutexLocked = <span class="hljs-number">1</span> &lt;&lt; <span class="hljs-literal">iota</span><br>    mutexWoken<br>    mutexStarving<br>    mutexWaiterShift = <span class="hljs-literal">iota</span><br>    starvationThresholdNs = <span class="hljs-number">1e6</span><br>)<br></code></pre></div></td></tr></table></figure>
+<p>第一行：<code>mutexLocked = 1 &lt;&lt; iota</code> ，iota
+的值是这行在 const 块中的偏移，因此 iota 的值为 0，我们得到
+<code>mutexLocked</code> 这个常量的值为 1 &lt;&lt; 0，也就是 1。</p>
+<p>第二行：<code>mutexWorken</code> ，因为这个 const
+声明块中并没有显式的常量初始化表达式，所以我们根据 const
+声明块里“隐式重复前一个非空表达式”的机制，这一行就等价于
+<code>mutexWorken = 1 &lt;&lt; iota</code>。而且，又因为这一行是 const
+块中的第二行，所以它的偏移量 iota 的值为 1，我们得到
+<code>mutexWorken</code> 这个常量的值为 1 &lt;&lt; 1，也就是 2。</p>
+<p>第三行：同第二行，只不过这一行的<code>iota=3</code></p>
+<p>第四行：<code>mutexWaiterShift = iota</code> ，这一行为常量
+<code>mutexWaiterShift</code>
+做了显式初始化，这样就不用再重复前一行了。由于这一行是第四行，而且作为行偏移值的
+iota 的值为 3，因此 <code>mutexWaiterShift</code> 的值就为 3。</p>
+<p>第五行：代码中直接用了一个具体值 1e6 给常量
+<code>starvationThresholdNs</code> 进行了赋值，那么这个常量值就是 1e6
+本身了。</p>
+<p>iota其他应方式</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">const</span> (<br>    Apple, Banana = <span class="hljs-literal">iota</span>, <span class="hljs-literal">iota</span> + <span class="hljs-number">10</span> <span class="hljs-comment">// 0, 10 (iota = 0)</span><br>    Strawberry, Grape <span class="hljs-comment">// 1, 11 (iota = 1)</span><br>    Pear, Watermelon  <span class="hljs-comment">// 2, 12 (iota = 2)</span><br>)<br></code></pre></div></td></tr></table></figure>
+<p>如果我们要略过 iota = 0，从 iota = 1 开始正式定义枚举常量</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOROOT/src/syscall/net_js.go</span><br><span class="hljs-keyword">const</span> (<br>    _ = <span class="hljs-literal">iota</span><br>    IPV6_V6ONLY  <span class="hljs-comment">// 1</span><br>    SOMAXCONN    <span class="hljs-comment">// 2</span><br>    SO_ERROR     <span class="hljs-comment">// 3</span><br>)<br></code></pre></div></td></tr></table></figure>
+<p>同理，略过中间值的话</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">const</span> (<br>    _ = <span class="hljs-literal">iota</span> <span class="hljs-comment">// 0</span><br>    Pin1<br>    Pin2<br>    Pin3<br>    _<br>    Pin5    <span class="hljs-comment">// 5   </span><br>)<br></code></pre></div></td></tr></table></figure>
+<h1 id="数据类型">数据类型</h1>
+<h2 id="整形">整形</h2>
+<p>Go
+语言的整型，主要用来表示现实世界中整型数量，比如：人的年龄、班级人数等。它可以分为<strong>平台无关整型</strong>和<strong>平台相关整型</strong>这两种，它们的区别主要就在，这些整数类型在不同
+CPU 架构或操作系统下面，它们的长度是否是一致的。</p>
+<p><strong>平台无关整形</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">类型</th>
+<th style="text-align: center;">长度</th>
+<th style="text-align: center;">取值范围</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">int8</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">[-128, 127]</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">int16</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">[-32768, 32767]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">int32</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">[-2147483648, 2147483647]</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">int64</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">[-9223372036854775808,
+9223372036854775807]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">uint8</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">[0, 255]</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">uint16</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">[0, 65535]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">uint32</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">[0, 4294967295]</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">uint64</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">[0, 18446744073709551615]</td>
+</tr>
+</tbody>
+</table>
+<p>注: 这些平台无关的整型也可以分成两类：有符号整型（int8 ~
+int64）和无符号整型（uint8 ~
+uint64）。两者的本质差别在于最高二进制位（bit
+位）是否被解释为符号位，这点会影响到无符号整型与有符号整型的取值范围。其取值范围为<span
+class="math inline">\([-2^{8 \times n-1}, 2^{8 \times n - 1}-1]\)</span>
+和 <span class="math inline">\([0, 2^{8 \times n}-1]\)</span></p>
+<p><strong>平台相关整形</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>类型</th>
+<th>说明</th>
+<th>32位长度</th>
+<th>64位长度</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>int</td>
+<td>默认有符号整型</td>
+<td>4 字节</td>
+<td>8 字节</td>
+</tr>
+<tr class="even">
+<td>uint</td>
+<td>默认无符号整型</td>
+<td>4 字节</td>
+<td>8 字节</td>
+</tr>
+<tr class="odd">
+<td>uintptr</td>
+<td>无符号整型</td>
+<td>大到足以存储任何指针的值</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>在这里我们要特别注意一点，由于这三个类型的长度是平台相关的，所以我们在编写有移植性要求的代码时，千万不要强依赖这些类型的长度。</p>
+<h3 id="整型的溢出问题">整型的溢出问题</h3>
+<p>无论哪种整型，都有它的取值范围，也就是有它可以表示的值边界。如果这个整型因为参与某个运算，导致结果超出了这个整型的值边界，我们就说发生了整型溢出的问题。</p>
+<h3 id="字面值与格式化输出">字面值与格式化输出</h3>
+<p>Go 语言在设计开始，就继承了 C 语言关于数值字面值（Number
+Literal）的语法形式。</p>
+<p>声明 <figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">//最初版本</span><br>a := <span class="hljs-number">53</span>        <span class="hljs-comment">// 十进制</span><br>b := <span class="hljs-number">0700</span>      <span class="hljs-comment">// 八进制，以&quot;0&quot;为前缀</span><br>c1 := <span class="hljs-number">0xaabbcc</span> <span class="hljs-comment">// 十六进制，以&quot;0x&quot;为前缀</span><br>c2 := <span class="hljs-number">0Xddeeff</span> <span class="hljs-comment">// 十六进制，以&quot;0X&quot;为前缀</span><br><br><span class="hljs-comment">//1.13 以后</span><br>d1 := <span class="hljs-number">0</span>b10000001 <span class="hljs-comment">// 二进制，以&quot;0b&quot;为前缀</span><br>d2 := <span class="hljs-number">0</span>B10000001 <span class="hljs-comment">// 二进制，以&quot;0B&quot;为前缀</span><br>e1 := <span class="hljs-number">0</span>o700      <span class="hljs-comment">// 八进制，以&quot;0o&quot;为前缀</span><br>e2 := <span class="hljs-number">0</span>O700      <span class="hljs-comment">// 八进制，以&quot;0O&quot;为前缀</span><br><br><span class="hljs-comment">//增加可读性，可以用下划线分割</span><br>a := <span class="hljs-number">5</span>_3_7   <span class="hljs-comment">// 十进制: 537</span><br>b := <span class="hljs-number">0</span>b_1000_0111  <span class="hljs-comment">// 二进制位表示为10000111 </span><br>c1 := <span class="hljs-number">0</span>_700  <span class="hljs-comment">// 八进制: 0700</span><br>c2 := <span class="hljs-number">0</span>o_700 <span class="hljs-comment">// 八进制: 0700</span><br>d1 := <span class="hljs-number">0</span>x_5c_6d <span class="hljs-comment">// 十六进制：0x5c6d</span><br></code></pre></div></td></tr></table></figure></p>
+<p>输出 <figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> a <span class="hljs-type">int8</span> = <span class="hljs-number">59</span><br>fmt.Printf(<span class="hljs-string">&quot;%b\n&quot;</span>, a) <span class="hljs-comment">//输出二进制：111011</span><br>fmt.Printf(<span class="hljs-string">&quot;%d\n&quot;</span>, a) <span class="hljs-comment">//输出十进制：59</span><br>fmt.Printf(<span class="hljs-string">&quot;%o\n&quot;</span>, a) <span class="hljs-comment">//输出八进制：73</span><br>fmt.Printf(<span class="hljs-string">&quot;%O\n&quot;</span>, a) <span class="hljs-comment">//输出八进制(带0o前缀)：0o73</span><br>fmt.Printf(<span class="hljs-string">&quot;%x\n&quot;</span>, a) <span class="hljs-comment">//输出十六进制(小写)：3b</span><br>fmt.Printf(<span class="hljs-string">&quot;%X\n&quot;</span>, a) <span class="hljs-comment">//输出十六进制(大写)：3B</span><br></code></pre></div></td></tr></table></figure></p>
+<h2 id="浮点型">浮点型</h2>
+<h3 id="浮点型的二进制表示">浮点型的二进制表示</h3>
+<p>IEEE 754 是 IEEE 制定的二进制浮点数算术标准，它是 20 世纪 80
+年代以来最广泛使用的浮点数运算标准，被许多 CPU
+与浮点运算器采用。现存的大部分主流编程语言，包括 Go 语言，都提供了符合
+IEEE 754 标准的浮点数格式与算术运算。</p>
+<p>IEEE 754 标准规定了四种表示浮点数值的方式：单精度（32
+位）、双精度（64 位）、扩展单精度（43 比特以上）与扩展双精度（79
+比特以上，通常以 80
+位实现）。后两种其实很少使用，我们重点关注前面两个就好了。</p>
+<p>Go 语言提供了 float32 与 float64 两种浮点类型，它们分别对应的就是
+IEEE 754 中的单精度与双精度浮点数值类型。</p>
+<p><strong>不过，这里要注意，Go 语言中没有提供 float 类型。</strong></p>
+<p>浮点数在内存中的二进制表示（Bit
+Representation）要比整型复杂得多，IEEE 754
+规范给出了在内存中存储和表示一个浮点数的标准形式，见下表</p>
+<table>
+<thead>
+<tr class="header">
+<th>符号位 S</th>
+<th>阶码 E</th>
+<th>尾数 M</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>sign</td>
+<td>exponent</td>
+<td>maintissa</td>
+</tr>
+</tbody>
+</table>
+<p>我们看到浮点数在内存中的二进制表示分三个部分：符号位、阶码（即经过换算的指数），以及尾数。这样表示的一个浮点数，它的值等于：
+<span class="math display">\[
+(-1)^S \times 1.M \times 2^{E-offset}
+\]</span> 其中浮点值的符号由符号位决定：当符号位为 1
+时，浮点值为负值；当符号位为 0 时，浮点值为正值。公式中 offset
+被称为阶码偏移值。</p>
+<p>单精度（float32）与双精度（float64）浮点数在阶码和尾数上的不同</p>
+<table>
+<thead>
+<tr class="header">
+<th>浮点类型</th>
+<th>符号位</th>
+<th>阶码</th>
+<th>阶码偏移值</th>
+<th>尾数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>单精度</td>
+<td>1</td>
+<td>8</td>
+<td>127</td>
+<td>23</td>
+</tr>
+<tr class="even">
+<td>双精度</td>
+<td>1</td>
+<td>11</td>
+<td>1023</td>
+<td>52</td>
+</tr>
+</tbody>
+</table>
+<p>单精度浮点类型（float32）为符号位分配了 1 个 bit，为阶码分配了 8 个
+bit，剩下的 23 个 bit
+分给了尾数。而双精度浮点类型，除了符号位的长度与单精度一样之外，其余两个部分的长度都要远大于单精度浮点型，阶码可用的
+bit 位数量为 11，尾数则更是拥有了 52 个 bit 位。</p>
+<h3 id="十进制小数转二进制小数">十进制小数转二进制小数</h3>
+<p>以139.8125为例</p>
+<ul>
+<li>步骤一：
+<ul>
+<li>整数部分 139d → 10001011b；除二取余</li>
+<li>小数部分 0.8125d → 0.1101b；乘二取整</li>
+<li>这样 139.8125d 就转化为 10001011.1101b</li>
+</ul></li>
+<li>步骤二：
+<ul>
+<li>移动小数点，直到整数部分仅有一个 1，即10001011.1101b →
+1.00010111101b，小数点向左移了 7 位，这样指数就为 7，尾数为
+00010111101b。</li>
+</ul></li>
+<li>步骤三：
+<ul>
+<li>IEEE754
+规定不能将小数点移动而得到的指数，一直填到阶码部分，指数到阶码还需要一个转换过程。对于
+float32 的单精度浮点数而言，阶码 = 指数 + 偏移值。偏移值的计算公式为
+<span class="math inline">\(2^{e-1}-1\)</span>，其中 e 为阶码部分的 bit
+位数，这里为 8，于是单精度浮点数的阶码偏移值就为 2^(8-1)-1 =
+127。这样在这个例子中，阶码 = 7 + 127 = 134d = 10000110b。</li>
+</ul></li>
+<li>步骤四：
+<ul>
+<li><p>将符号位、阶码和尾数填到各自位置，得到最终浮点数的二进制表示。尾数位数不足
+23 位，可在后面补 0。</p></li>
+<li><table>
+<thead>
+<tr class="header">
+<th>符号位</th>
+<th>阶码</th>
+<th>尾数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>10000110</td>
+<td>00010111101(000000000000)</td>
+</tr>
+</tbody>
+</table></li>
+</ul></li>
+</ul>
+<p>最终浮点数 139.8125d 的二进制表示就为
+0b_0_10000110_00010111101_000000000000。</p>
+<p>代码验证：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> f <span class="hljs-type">float32</span> = <span class="hljs-number">139.8125</span><br>    bits := math.Float32bits(f)<br>    fmt.Printf(<span class="hljs-string">&quot;%b\n&quot;</span>, bits)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h3 id="字面值与格式化输出-1">字面值与格式化输出</h3>
+<p>Go
+浮点类型字面值大体可分为两类，一类是直白地用十进制表示的浮点值形式。这一类，我们通过字面值就可直接确定它的浮点值，比如：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-number">3.1415</span><br><span class="hljs-number">.15</span>  <span class="hljs-comment">// 整数部分如果为0，整数部分可以省略不写</span><br><span class="hljs-number">81.80</span><br><span class="hljs-number">82.</span> <span class="hljs-comment">// 小数部分如果为0，小数点后的0可以省略不写</span><br></code></pre></div></td></tr></table></figure>
+<p>另一类则是科学计数法形式。采用科学计数法表示的浮点字面值，我们需要通过一定的换算才能确定其浮点值。而且在这里，科学计数法形式又分为十进制形式表示的，和十六进制形式表示的两种。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-number">6674.28e-2</span> <span class="hljs-comment">// 6674.28 * 10^(-2) = 66.742800</span><br><span class="hljs-number">.12345E+5</span>  <span class="hljs-comment">// 0.12345 * 10^5 = 12345.000000</span><br><br><span class="hljs-number">0x2</span>.p10  <span class="hljs-comment">// 2.0 * 2^10 = 2048.000000</span><br><span class="hljs-number">0x1</span>.Fp+<span class="hljs-number">0</span> <span class="hljs-comment">// 1.9375 * 2^0 = 1.937500</span><br></code></pre></div></td></tr></table></figure>
+<p>十六进制科学计数法的整数部分、小数部分用的都是十六进制形式，但指数部分依然是十进制形式，并且字面值中的
+p/P 代表的幂运算的底数为 2。</p>
+<p>浮点型的字面值后，和整型一样，fmt
+包也提供了针对浮点数的格式化输出。我们最常使用的格式化输出形式是
+%f。通过 %f，我们可以输出浮点数最直观的原值形式。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> f <span class="hljs-type">float64</span> = <span class="hljs-number">123.45678</span><br>fmt.Printf(<span class="hljs-string">&quot;%f\n&quot;</span>, f) <span class="hljs-comment">// 123.456780</span><br>fmt.Printf(<span class="hljs-string">&quot;%e\n&quot;</span>, f) <span class="hljs-comment">// 1.234568e+02</span><br>fmt.Printf(<span class="hljs-string">&quot;%x\n&quot;</span>, f) <span class="hljs-comment">// 0x1.edd3be22e5de1p+06</span><br></code></pre></div></td></tr></table></figure>
+<p>其中 %e 输出的是十进制的科学计数法形式，而 %x
+输出的则是十六进制的科学计数法形式。</p>
+<h2 id="字符串类型">字符串类型</h2>
+<h3 id="原生支持字符串有什么好处">原生支持字符串有什么好处？</h3>
+<p>这样定义的非原生字符串在使用过程中会有很多问题，比如： *
+不是原生类型，编译器不会对它进行类型校验，导致类型安全性差；字符串操作时要时刻考虑结尾的’\0’，防止缓冲区溢出；
+*
+以字符数组形式定义的“字符串”，它的值是可变的，在并发场景中需要考虑同步问题；
+* 获取一个字符串的长度代价较大，通常是 O(n) 时间复杂度； * C
+语言没有内置对非 ASCII 字符（如中文字符）的支持。</p>
+<h4
+id="string-类型的数据是不可变的提高了字符串的并发安全性和存储利用率">1.
+string 类型的数据是不可变的，提高了字符串的并发安全性和存储利用率。</h4>
+<p>Go
+语言规定，字符串类型的值在它的生命周期内是不可改变的。这就是说，如果我们声明了一个字符串类型的变量，那我们是无法通过这个变量改变它对应的字符串值的，但这并不是说我们不能为一个字符串类型变量进行二次赋值。</p>
+<p>Go
+这样的“字符串类型数据不可变”的性质给开发人员带来的最大好处，就是我们不用再担心字符串的并发安全问题。这样，Go
+字符串可以被多个 Goroutine（Go
+语言的轻量级用户线程，后面我们会详细讲解）共享，开发者不用因为担心并发安全问题，使用会带来一定开销的同步机制。另外，也由于字符串的不可变性，针对同一个字符串值，无论它在程序的几个位置被使用，Go
+编译器只需要为它分配一块存储就好了，大大提高了存储利用率。</p>
+<h4
+id="没有结尾0而且获取长度的时间复杂度是常数时间消除了获取字符串长度的开销">2.
+没有结尾’\0’，而且获取长度的时间复杂度是常数时间，消除了获取字符串长度的开销。</h4>
+<p>Go 语言修正了这个缺陷，Go
+字符串中没有结尾’\0’，获取字符串长度更不需要结尾’\0’作为结束标志。并且，Go
+获取字符串长度是一个常数级时间复杂度，无论字符串中字符个数有多少，我们都可以快速得到字符串的长度值。</p>
+<h4
+id="原生支持所见即所得的原始字符串大大降低构造多行字符串时的心智负担">3.
+原生支持“所见即所得”的原始字符串，大大降低构造多行字符串时的心智负担。</h4>
+<p>Go 语言通过一对反引号原生支持构造“所见即所得”的原始字符串（Raw
+String）</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> s <span class="hljs-type">string</span> = <span class="hljs-string">`         ,_---~~~~~----._</span><br><span class="hljs-string">    _,,_,*^____      _____*g*\&quot;*,--,</span><br><span class="hljs-string">   / __/ /&#x27;     ^.  /      \ ^@q   f</span><br><span class="hljs-string">  [  @f | @))    |  | @))   l  0 _/</span><br><span class="hljs-string">   \/   \~____ / __ \_____/     \</span><br><span class="hljs-string">     |           _l__l_           I</span><br><span class="hljs-string">    &#125;          [______]           I</span><br><span class="hljs-string">    ]            | | |            |</span><br><span class="hljs-string">    ]             ~ ~             |</span><br><span class="hljs-string">    |                            |</span><br><span class="hljs-string">     |                           |`</span><br>fmt.Println(s)<br></code></pre></div></td></tr></table></figure>
+<h4
+id="对非-ascii-字符提供原生支持消除了源码在不同环境下显示乱码的可能">4.
+对非 ASCII 字符提供原生支持，消除了源码在不同环境下显示乱码的可能。</h4>
+<p>Go 语言源文件默认采用的是 Unicode 字符集，Unicode
+字符集是目前市面上最流行的字符集，它囊括了几乎所有主流非 ASCII
+字符（包括中文字符）。Go 字符串中的每个字符都是一个 Unicode
+字符，并且这些 Unicode 字符是以 UTF-8 编码格式存储在内存当中的。</p>
+<h3 id="go-字符串的组成">Go 字符串的组成</h3>
+<p>一种是字节视角，也就是和所有其它支持字符串的主流语言一样，Go
+语言中的字符串值也是一个可空的字节序列，字节序列中的字节个数称为该字符串的长度。一个个的字节只是孤立数据，不表意。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> s = <span class="hljs-string">&quot;中国人&quot;</span><br>fmt.Printf(<span class="hljs-string">&quot;the length of s = %d\n&quot;</span>, <span class="hljs-built_in">len</span>(s)) <span class="hljs-comment">// 9</span><br><br><span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(s); i++ &#123;<br>  fmt.Printf(<span class="hljs-string">&quot;0x%x &quot;</span>, s[i]) <span class="hljs-comment">// 0xe4 0xb8 0xad 0xe5 0x9b 0xbd 0xe4 0xba 0xba</span><br>&#125;<br>fmt.Printf(<span class="hljs-string">&quot;\n&quot;</span>)<br></code></pre></div></td></tr></table></figure>
+<p>如果要表意，我们就需要从字符串的另外一个视角来看，也就是字符串是由一个可空的字符序列构成。这个时候我们再看下面代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> s = <span class="hljs-string">&quot;中国人&quot;</span><br>fmt.Println(<span class="hljs-string">&quot;the character count in s is&quot;</span>, utf8.RuneCountInString(s)) <span class="hljs-comment">// 3</span><br><br><span class="hljs-keyword">for</span> _, c := <span class="hljs-keyword">range</span> s &#123;<br>  fmt.Printf(<span class="hljs-string">&quot;0x%x &quot;</span>, c) <span class="hljs-comment">// 0x4e2d 0x56fd 0x4eba</span><br>&#125;<br>fmt.Printf(<span class="hljs-string">&quot;\n&quot;</span>)<br></code></pre></div></td></tr></table></figure>
+<p>0x4e2d 0x56fd 0x4eba分别是中国人在unicode中的码点</p>
+<h3 id="go-字符串类型的内部表示">Go 字符串类型的内部表示</h3>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOROOT/src/reflect/value.go</span><br><br><span class="hljs-comment">// StringHeader是一个string的运行时表示</span><br><span class="hljs-keyword">type</span> StringHeader <span class="hljs-keyword">struct</span> &#123;<br>    Data <span class="hljs-type">uintptr</span><br>    Len  <span class="hljs-type">int</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>string
+类型其实是一个“描述符”，它本身并不真正存储字符串数据，而仅是由一个指向底层存储的指针和字符串的长度字段组成的。</p>
+<p>[[Pasted image 20220330102747.png]]</p>
+<p>Go 编译器把源码中的 string 类型映射为运行时的一个二元组（Data,
+Len），真实的字符串值数据就存储在一个被 Data 指向的底层数组中。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">dumpBytesArray</span><span class="hljs-params">(arr []<span class="hljs-type">byte</span>)</span></span> &#123;<br>    fmt.Printf(<span class="hljs-string">&quot;[&quot;</span>)<br>    <span class="hljs-keyword">for</span> _, b := <span class="hljs-keyword">range</span> arr &#123;<br>        fmt.Printf(<span class="hljs-string">&quot;%c &quot;</span>, b)<br>    &#125;<br>    fmt.Printf(<span class="hljs-string">&quot;]\n&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> s = <span class="hljs-string">&quot;hello&quot;</span><br>    hdr := (*reflect.StringHeader)(unsafe.Pointer(&amp;s)) <span class="hljs-comment">// 将string类型变量地址显式转型为reflect.StringHeader</span><br>    fmt.Printf(<span class="hljs-string">&quot;0x%x\n&quot;</span>, hdr.Data) <span class="hljs-comment">// 0x10a30e0</span><br>    p := (*[<span class="hljs-number">5</span>]<span class="hljs-type">byte</span>)(unsafe.Pointer(hdr.Data)) <span class="hljs-comment">// 获取Data字段所指向的数组的指针</span><br>    dumpBytesArray((*p)[:]) <span class="hljs-comment">// [h e l l o ]   // 输出底层数组的内容</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这段代码利用了 unsafe.Pointer 的通用指针转型能力，按照 StringHeader
+给出的结构内存布局，“顺藤摸瓜”，一步步找到了底层数组的地址，并输出了底层数组内容。</p>
+<p>可以得到这样一个结论，那就是我们直接将 string 类型通过函数 /
+方法参数传入也不会带来太多的开销。因为传入的仅仅是一个“描述符”，而不是真正的字符串数据。</p>
+<h3 id="go-字符串类型的常见操作">Go 字符串类型的常见操作</h3>
+<h4 id="下标操作">下标操作</h4>
+<p>在字符串的实现中，真正存储数据的是底层的数组。字符串的下标操作本质上等价于底层数组的下标操作。
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> s = <span class="hljs-string">&quot;中国人&quot;</span><br>fmt.Printf(<span class="hljs-string">&quot;0x%x\n&quot;</span>, s[<span class="hljs-number">0</span>]) <span class="hljs-comment">// 0xe4：字符“中” utf-8编码的第一个字节</span><br></code></pre></div></td></tr></table></figure></p>
+<h4 id="字符迭代">字符迭代</h4>
+<p>Go 有两种迭代形式：常规 for 迭代与 for range
+迭代。你要注意，通过这两种形式的迭代对字符串进行操作得到的结果是不同的。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> s = <span class="hljs-string">&quot;中国人&quot;</span><br><br><span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(s); i++ &#123;<br>  fmt.Printf(<span class="hljs-string">&quot;index: %d, value: 0x%x\n&quot;</span>, i, s[i])<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> s = <span class="hljs-string">&quot;中国人&quot;</span><br><br><span class="hljs-keyword">for</span> i, v := <span class="hljs-keyword">range</span> s &#123;<br>    fmt.Printf(<span class="hljs-string">&quot;index: %d, value: 0x%x\n&quot;</span>, i, v)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>两种不同方法分别输出的按字节和按字符输出的</p>
+<h4 id="字符串连接">字符串连接</h4>
+<p>字符串内容是不可变的，但这并不妨碍我们基于已有字符串创建新字符串。Go
+原生支持通过 +/+= 操作符进行字符串连接</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go">s := <span class="hljs-string">&quot;Rob Pike, &quot;</span><br>s = s + <span class="hljs-string">&quot;Robert Griesemer, &quot;</span><br>s += <span class="hljs-string">&quot; Ken Thompson&quot;</span><br><br>fmt.Println(s) <span class="hljs-comment">// Rob Pike, Robert Griesemer, Ken Thompson</span><br></code></pre></div></td></tr></table></figure>
+<p>虽然通过 +/+=
+进行字符串连接的开发体验是最好的，但连接性能就未必是最快的了。除了这个方法外，Go
+还提供了 strings.Builder、strings.Join、fmt.Sprintf
+等函数来进行字符串连接操作。</p>
+<h4 id="字符串比较">字符串比较</h4>
+<p>Go 字符串类型支持各种比较关系操作符，包括 = =、!=
+、&gt;=、&lt;=、&gt; 和 &lt;。在字符串的比较上，Go
+采用字典序的比较策略，分别从每个字符串的起始处，开始逐个字节地对两个字符串类型变量进行比较。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>        <span class="hljs-comment">// ==</span><br>        s1 := <span class="hljs-string">&quot;世界和平&quot;</span><br>        s2 := <span class="hljs-string">&quot;世界&quot;</span> + <span class="hljs-string">&quot;和平&quot;</span><br>        fmt.Println(s1 == s2) <span class="hljs-comment">// true</span><br><br>        <span class="hljs-comment">// !=</span><br>        s1 = <span class="hljs-string">&quot;Go&quot;</span><br>        s2 = <span class="hljs-string">&quot;C&quot;</span><br>        fmt.Println(s1 != s2) <span class="hljs-comment">// true</span><br><br>        <span class="hljs-comment">// &lt; and &lt;=</span><br>        s1 = <span class="hljs-string">&quot;12345&quot;</span><br>        s2 = <span class="hljs-string">&quot;23456&quot;</span><br>        fmt.Println(s1 &lt; s2)  <span class="hljs-comment">// true</span><br>        fmt.Println(s1 &lt;= s2) <span class="hljs-comment">// true</span><br><br>        <span class="hljs-comment">// &gt; and &gt;=</span><br>        s1 = <span class="hljs-string">&quot;12345&quot;</span><br>        s2 = <span class="hljs-string">&quot;123&quot;</span><br>        fmt.Println(s1 &gt; s2)  <span class="hljs-comment">// true</span><br>        fmt.Println(s1 &gt;= s2) <span class="hljs-comment">// true</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h4 id="字符串转换">字符串转换</h4>
+<p>Go 支持字符串与字节切片、字符串与 rune
+切片的双向转换，并且这种转换无需调用任何函数，只需使用显式类型转换就可以了。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> s <span class="hljs-type">string</span> = <span class="hljs-string">&quot;中国人&quot;</span><br>                      <br><span class="hljs-comment">// string -&gt; []rune</span><br>rs := []<span class="hljs-type">rune</span>(s) <br>fmt.Printf(<span class="hljs-string">&quot;%x\n&quot;</span>, rs) <span class="hljs-comment">// [4e2d 56fd 4eba]</span><br>                <br><span class="hljs-comment">// string -&gt; []byte</span><br>bs := []<span class="hljs-type">byte</span>(s) <br>fmt.Printf(<span class="hljs-string">&quot;%x\n&quot;</span>, bs) <span class="hljs-comment">// e4b8ade59bbde4baba</span><br>                <br><span class="hljs-comment">// []rune -&gt; string</span><br>s1 := <span class="hljs-type">string</span>(rs)<br>fmt.Println(s1) <span class="hljs-comment">// 中国人</span><br>                <br><span class="hljs-comment">// []byte -&gt; string</span><br>s2 := <span class="hljs-type">string</span>(bs)<br>fmt.Println(s2) <span class="hljs-comment">// 中国人</span><br></code></pre></div></td></tr></table></figure>
+<p>这样的转型看似简单，但无论是 string 转切片，还是切片转
+string，这类转型背后也是有着一定开销的。这些开销的根源就在于 string
+是不可变的，运行时要为转换后的类型分配新内存。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/">Go语言学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Go/">Go</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022-05/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Go语言学习笔记-复合类型</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022-03/Pytorch%E7%AE%80%E5%8D%95%E9%A3%9F%E7%94%A8%E7%AC%94%E8%AE%B0/">
+                        <span class="hidden-mobile">PyTorch简单食用笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        豫ICP备2022006334号-1
+      </a>
+    </span>
+    
+      
+        <span>
+          <a
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=41900102411004"
+            rel="nofollow noopener"
+            class="beian-police"
+            target="_blank"
+          >
+            
+              <span style="visibility: hidden; width: 0">|</span>
+              <img src="/images/system/beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+            
+            <span>豫公网安备 41900102411004号</span>
+          </a>
+        </span>
+      
+    
+  </div>
+
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

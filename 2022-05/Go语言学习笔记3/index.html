@@ -1,0 +1,1076 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/system/icon.jpg">
+  <link rel="icon" href="/images/system/icon.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Ailurus">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="整理学习go基础的过程中，一些基础语法以及相关的问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go语言学习笔记-控制结构、函数">
+<meta property="og:url" content="http://blog.ailurus2233.site/2022-05/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/index.html">
+<meta property="og:site_name" content="Ailurusの客栈">
+<meta property="og:description" content="整理学习go基础的过程中，一些基础语法以及相关的问题">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-06T08:13:35.000Z">
+<meta property="article:modified_time" content="2022-05-06T08:33:32.231Z">
+<meta property="article:tag" content="Go">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>Go语言学习笔记-控制结构、函数 - Ailurusの客栈</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"blog.ailurus2233.site","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"|","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ailurus&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/system/background.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Go语言学习笔记-控制结构、函数">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Ailurus
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-05-06 16:13" pubdate>
+        2022年5月6日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      29k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      239 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Go语言学习笔记-控制结构、函数</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年5月6日 下午
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="控制结构">控制结构</h1>
+<h2 id="if-语句">if 语句</h2>
+<p>if 语句是 Go 语言中提供的一种分支控制结构，它也是 Go
+中最常用、最简单的分支控制结构。它会根据布尔表达式的值，在两个分支中选择一个执行。我们先来看一个最简单的、单分支结构的
+if 语句的形式：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">if</span> boolean_expression &#123;<br>    <span class="hljs-comment">// 新分支</span><br>&#125;<br><br><span class="hljs-comment">// 原分支</span><br></code></pre></div></td></tr></table></figure>
+<p>虽然各种编程语言几乎都原生支持了 if 语句，但 Go 的 if
+语句依然有着自己的特点：</p>
+<ol type="1">
+<li>和 Go 函数一样，if 语句的分支代码块的左大括号与 if
+关键字在同一行上，这也是 Go 代码风格的统一要求，gofmt
+工具会帮助我们实现这一点；</li>
+<li>if
+语句的布尔表达式整体不需要用括号包裹，一定程度上减少了开发人员敲击键盘的次数。而且，if
+关键字后面的条件判断表达式的求值结果必须是布尔类型，即要么是
+true，要么是 false</li>
+</ol>
+<h3 id="逻辑操作符">逻辑操作符</h3>
+<p>如果判断的条件比较多，我们可以用多个逻辑操作符连接起多个条件判断表达式</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">if</span> (runtime.GOOS == <span class="hljs-string">&quot;linux&quot;</span>) &amp;&amp; (runtime.GOARCH == <span class="hljs-string">&quot;amd64&quot;</span>) &amp;&amp;<br>    (runtime.Compiler != <span class="hljs-string">&quot;gccgo&quot;</span>) &#123;<br>    <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;we are using standard go compiler on linux os for amd64&quot;</span>)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>Go
+语言的操作符是有优先级的。这里你要记住，一元操作符，比如上面的逻辑非操作符，具有最高优先级，其他操作符的优先级如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th>优先级</th>
+<th>操作符</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>5</td>
+<td>*、/、%、&lt;&lt;、&gt;&gt;、&amp;、&amp;^</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>+、-</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>!=、==、&lt;、&lt;=、&gt;、&gt;=</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>&amp;&amp;</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>||</td>
+</tr>
+</tbody>
+</table>
+<p>操作符优先级决定了操作数优先参与哪个操作符的求值运算，我们以下面代码中
+if 语句的布尔表达式为例：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    a, b := <span class="hljs-literal">false</span>,<span class="hljs-literal">true</span><br>    <span class="hljs-keyword">if</span> a &amp;&amp; b != <span class="hljs-literal">true</span> &#123;<br>        <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;(a &amp;&amp; b) != true&quot;</span>)<br>        <span class="hljs-keyword">return</span><br>    &#125;<br>    <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;a &amp;&amp; (b != true) == false&quot;</span>)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这段代码的关键就在于，if 后面的布尔表达式中的操作数 b 是先参与
+&amp;&amp; 的求值运算，还是先参与!=
+的求值运算。根据前面的操作符优先级表，我们知道，!= 的优先级要高于
+&amp;&amp;，因此操作数 b 先参与的是!= 的求值运算，这样 if
+后的布尔表达式就等价于 a &amp;&amp; (b != true) ，而不是我们最初认为的
+(a &amp;&amp; b) != true。</p>
+<p>从学习和使用 C
+语言开始，我自己就记不住这么多操作符的优先级，况且不同编程语言的操作符优先级还可能有所不同，所以我个人倾向在
+if 布尔表达式中，使用带有小括号的子布尔表达式来清晰地表达判断条件。</p>
+<p>除了上面的最简形式，Go 语言的 if
+语句还有其他多种形式，比如二分支结构和多（N）分支结构。</p>
+<p>二分支控制结构比较好理解。比如下面这个例子，当 boolean_expression
+求值为 true 时，执行分支 1，否则，执行分支 2：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">if</span> boolean_expression &#123;<br>  <span class="hljs-comment">// 分支1</span><br>&#125; <span class="hljs-keyword">else</span> &#123;<br>  <span class="hljs-comment">// 分支2</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>多分支结构:</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">if</span> boolean_expression1 &#123;<br>  <span class="hljs-comment">// 分支1</span><br>&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> boolean_expression2 &#123;<br>  <span class="hljs-comment">// 分支2</span><br><br>... ...<br><br>&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> boolean_expressionN &#123;<br>  <span class="hljs-comment">// 分支N</span><br>&#125; <span class="hljs-keyword">else</span> &#123;<br>  <span class="hljs-comment">// 分支N+1</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><strong>支持声明 if
+语句的自用变量</strong>：无论是单分支、二分支还是多分支结构，我们都可以在
+if 后的布尔表达式前，进行一些变量的声明，在 if
+布尔表达式前声明的变量，我叫它 if 语句的自用变量。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">if</span> a, c := f(), h(); a &gt; <span class="hljs-number">0</span> &#123;<br>        <span class="hljs-built_in">println</span>(a)<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> b := f(); b &gt; <span class="hljs-number">0</span> &#123;<br>        <span class="hljs-built_in">println</span>(a, b)<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-built_in">println</span>(a, b, c)<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>在 if 语句中声明自用变量是 Go
+语言的一个惯用法，这种使用方式直观上可以让开发者有一种代码行数减少的感觉，提高可读性。</p>
+<p><strong>if 语句的“快乐路径”原则</strong>:
+在日常编码中要减少多分支结构，甚至是二分支结构的使用，这会有助于我们编写出优雅、简洁、易读易维护且不易错的代码。</p>
+<h2 id="for-语句">for 语句</h2>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> sum <span class="hljs-type">int</span><br><span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++ &#123;<br>    sum += i<br>&#125;<br><span class="hljs-built_in">println</span>(sum)<br></code></pre></div></td></tr></table></figure>
+<p>这种 for 语句的使用形式是 Go 语言中 for 循环语句的经典形式</p>
+<p>Go 语言的 for
+循环支持声明多循环变量，并且可以应用在循环体以及判断条件中，比如下面就是一个使用多循环变量的、稍复杂的例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">for</span> i, j, k := <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>; (i &lt; <span class="hljs-number">20</span>) &amp;&amp; (j &lt; <span class="hljs-number">10</span>) &amp;&amp; (k &lt; <span class="hljs-number">30</span>); i, j, k = i+<span class="hljs-number">1</span>, j+<span class="hljs-number">1</span>, k+<span class="hljs-number">5</span> &#123;<br>    sum += (i + j + k)<br>    <span class="hljs-built_in">println</span>(sum)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>我们继续按四个组成部分分析这段代码。其实，除了循环体部分（③）之外，其余的三个部分都是可选的。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; &#123;<br>    i++<br>&#125;<br><br>i := <span class="hljs-number">0</span><br><span class="hljs-keyword">for</span> ; i &lt; <span class="hljs-number">10</span>; i++&#123;<br>    <span class="hljs-built_in">println</span>(i)<br>&#125;  <br><br><br>i := <span class="hljs-number">0</span><br><span class="hljs-keyword">for</span> ; i &lt; <span class="hljs-number">10</span>; &#123;<br>    <span class="hljs-built_in">println</span>(i)<br>    i++<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>虽然我们对前置语句或后置语句进行了省略，但经典 for
+循环形式中的分号依然被保留着，你要注意这一点，这是 Go
+语法的要求。不过有一个例外，那就是当循环前置与后置语句都省略掉，仅保留循环判断条件表达式时，我们可以省略经典
+for 循环形式中的分号。也就是说，我们可以将上面的例子写出如下形式：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go">i := <span class="hljs-number">0</span><br><span class="hljs-keyword">for</span> i &lt; <span class="hljs-number">10</span> &#123;<br>    <span class="hljs-built_in">println</span>(i)<br>    i++<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这种形式也是我们在日常 Go 编码中经常使用的 for
+循环语句的第二种形式，也就是除了循环体之外，我们仅保留循环判断条件表达式。特殊的，当
+for 循环语句的循环判断条件表达式的求值结果始终为 true
+时，我们就可以将它省略掉了：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">for</span> &#123; <br>   <span class="hljs-comment">// 循环体代码</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><strong>for range 循环</strong></p>
+<p>先来看一个例子。如果我们要使用 for
+经典形式遍历一个切片中的元素，我们可以这样做：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> sl = []<span class="hljs-type">int</span>&#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>&#125;<br><span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(sl); i++ &#123;<br>    fmt.Printf(<span class="hljs-string">&quot;sl[%d] = %d\n&quot;</span>, i, sl[i])<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>Go 语言提供了一个更方便的“语法糖”形式：for
+range。现在我们就来写一个等价于上面代码的 for range 循环：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">for</span> i, v := <span class="hljs-keyword">range</span> sl &#123;<br>    fmt.Printf(<span class="hljs-string">&quot;sl[%d] = %d\n&quot;</span>, i, v)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>for range 语句也有几个常见变种</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">//不关心值时</span><br><span class="hljs-keyword">for</span> i := <span class="hljs-keyword">range</span> sl &#123;<br>  <span class="hljs-comment">// ... </span><br>&#125;<br><br><span class="hljs-comment">//只关心值</span><br><br><span class="hljs-keyword">for</span> _, v := <span class="hljs-keyword">range</span> sl &#123;<br>  <span class="hljs-comment">// ... </span><br>&#125;<br><br><span class="hljs-comment">//都不关心</span><br><span class="hljs-keyword">for</span> _, _ = <span class="hljs-keyword">range</span> sl &#123;<br>  <span class="hljs-comment">// ... </span><br>&#125;<br><span class="hljs-comment">//or</span><br><span class="hljs-keyword">for</span> _, _ = <span class="hljs-keyword">range</span> sl &#123;<br>  <span class="hljs-comment">// ... </span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>针对不同数据类型，for range 分析</p>
+<p><strong>string</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> s = <span class="hljs-string">&quot;中国人&quot;</span><br><span class="hljs-keyword">for</span> i, v := <span class="hljs-keyword">range</span> s &#123;<br>    fmt.Printf(<span class="hljs-string">&quot;%d %s 0x%x\n&quot;</span>, i, <span class="hljs-type">string</span>(v), v)<br>&#125;<br><span class="hljs-comment">// 输出</span><br><span class="hljs-comment">// 0 中 0x4e2d</span><br><span class="hljs-comment">// 3 国 0x56fd</span><br><span class="hljs-comment">// 6 人 0x4eba</span><br></code></pre></div></td></tr></table></figure>
+<p>for range 对于 string 类型来说，每次循环得到的 v 值是一个 Unicode
+字符码点，也就是 rune 类型值，而不是一个字节，返回的第一个值 i 为该
+Unicode
+字符码点的内存编码（UTF-8）的第一个字节在字符串内存序列中的位置。</p>
+<p><strong>map</strong></p>
+<p>但在 Go 语言中，我们要对 map 进行循环操作，for range 是唯一的方法</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> m = <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">int</span> &#123;<br>  <span class="hljs-string">&quot;Rob&quot;</span> : <span class="hljs-number">67</span>,<br>    <span class="hljs-string">&quot;Russ&quot;</span> : <span class="hljs-number">39</span>,<br>    <span class="hljs-string">&quot;John&quot;</span> : <span class="hljs-number">29</span>,<br>&#125;<br><br><span class="hljs-keyword">for</span> k, v := <span class="hljs-keyword">range</span> m &#123;<br>    <span class="hljs-built_in">println</span>(k, v)<br>&#125;<br><br><span class="hljs-comment">// John 29</span><br><span class="hljs-comment">// Rob 67</span><br><span class="hljs-comment">// Russ 39</span><br></code></pre></div></td></tr></table></figure>
+<p>每次循环，循环变量 k 和 v 分别会被赋值为 map 键值对集合中一个元素的
+key 值和 value 值。而且，map 类型中没有下标的概念，通过 key 和 value
+来循环操作 map 类型变量也就十分自然了。</p>
+<p><strong>channel</strong></p>
+<p>channel 是 Go 语言提供的并发设计的原语，它用于多个 Goroutine
+之间的通信，在for range 中的用法是下面这样的:</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> c = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)<br><span class="hljs-keyword">for</span> v := <span class="hljs-keyword">range</span> c &#123;<br>   <span class="hljs-comment">// ... </span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>在这个例子中，for range 每次从 channel
+中读取一个元素后，会把它赋值给循环变量 v，并进入循环体。当 channel
+中没有数据可读的时候，for range 循环会阻塞在对 channel 的读操作上。直到
+channel 关闭时，for range 循环才会结束，这也是 for range 循环与 channel
+配合时隐含的循环判断条件。</p>
+<h3 id="带-label-的-continue-语句">带 label 的 continue 语句</h3>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> sum <span class="hljs-type">int</span><br><span class="hljs-keyword">var</span> sl = []<span class="hljs-type">int</span>&#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>&#125;<br><span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(sl); i++ &#123;<br>    <span class="hljs-keyword">if</span> sl[i]%<span class="hljs-number">2</span> == <span class="hljs-number">0</span> &#123;<br>        <span class="hljs-comment">// 忽略切片中值为偶数的元素</span><br>        <span class="hljs-keyword">continue</span><br>    &#125;<br>    sum += sl[i]<br>&#125;<br><span class="hljs-built_in">println</span>(sum) <span class="hljs-comment">// 9</span><br></code></pre></div></td></tr></table></figure>
+<p>与C语法上的continue并没有很大区别，但是Go 语言中的 continue 在 C 语言
+continue 语义的基础上又增加了对 label 的支持。</p>
+<p>label 语句的作用，是标记跳转的目标。我们可以把上面的代码改造为使用
+label 的等价形式：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> sum <span class="hljs-type">int</span><br>    <span class="hljs-keyword">var</span> sl = []<span class="hljs-type">int</span>&#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>&#125;<br><br>loop:<br>    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(sl); i++ &#123;<br>        <span class="hljs-keyword">if</span> sl[i]%<span class="hljs-number">2</span> == <span class="hljs-number">0</span> &#123;<br>            <span class="hljs-comment">// 忽略切片中值为偶数的元素</span><br>            <span class="hljs-keyword">continue</span> loop<br>        &#125;<br>        sum += sl[i]<br>    &#125;<br>    <span class="hljs-built_in">println</span>(sum) <span class="hljs-comment">// 9</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>而带 label 的 continue
+语句，通常出现于嵌套循环语句中，被用于跳转到外层循环并继续执行外层循环语句的下一个迭代，比如下面这段代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> sl = [][]<span class="hljs-type">int</span>&#123;<br>        &#123;<span class="hljs-number">1</span>, <span class="hljs-number">34</span>, <span class="hljs-number">26</span>, <span class="hljs-number">35</span>, <span class="hljs-number">78</span>&#125;,<br>        &#123;<span class="hljs-number">3</span>, <span class="hljs-number">45</span>, <span class="hljs-number">13</span>, <span class="hljs-number">24</span>, <span class="hljs-number">99</span>&#125;,<br>        &#123;<span class="hljs-number">101</span>, <span class="hljs-number">13</span>, <span class="hljs-number">38</span>, <span class="hljs-number">7</span>, <span class="hljs-number">127</span>&#125;,<br>        &#123;<span class="hljs-number">54</span>, <span class="hljs-number">27</span>, <span class="hljs-number">40</span>, <span class="hljs-number">83</span>, <span class="hljs-number">81</span>&#125;,<br>    &#125;<br><br>outerloop:<br>    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(sl); i++ &#123;<br>        <span class="hljs-keyword">for</span> j := <span class="hljs-number">0</span>; j &lt; <span class="hljs-built_in">len</span>(sl[i]); j++ &#123;<br>            <span class="hljs-keyword">if</span> sl[i][j] == <span class="hljs-number">13</span> &#123;<br>                fmt.Printf(<span class="hljs-string">&quot;found 13 at [%d, %d]\n&quot;</span>, i, j)<br>                <span class="hljs-keyword">continue</span> outerloop<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><strong>与goto的区别</strong>：使用goto不管是内层循环还是外层循环都会被终结，代码将会从
+outerloop 这个 label 处，开始重新执行我们的嵌套循环语句，这与带 label 的
+continue 的跳转语义是完全不同的。</p>
+<h3 id="break-语句的使用">break 语句的使用</h3>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> sl = []<span class="hljs-type">int</span>&#123;<span class="hljs-number">5</span>, <span class="hljs-number">19</span>, <span class="hljs-number">6</span>, <span class="hljs-number">3</span>, <span class="hljs-number">8</span>, <span class="hljs-number">12</span>&#125;<br>    <span class="hljs-keyword">var</span> firstEven <span class="hljs-type">int</span> = <span class="hljs-number">-1</span><br><br>    <span class="hljs-comment">// 找出整型切片sl中的第一个偶数</span><br>    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(sl); i++ &#123;<br>        <span class="hljs-keyword">if</span> sl[i]%<span class="hljs-number">2</span> == <span class="hljs-number">0</span> &#123;<br>            firstEven = sl[i]<br>            <span class="hljs-keyword">break</span><br>        &#125;<br>    &#125;<br><br>    <span class="hljs-built_in">println</span>(firstEven) <span class="hljs-comment">// 6</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>一旦找到就不需要继续执行后续迭代了，这个时候我们就通过 break
+语句跳出了这个循环。</p>
+<p>和 continue 语句一样，Go 也 break 语句增加了对 label
+的支持。而且，和前面 continue 语句一样，如果遇到嵌套循环，break
+要想跳出外层循环，用不带 label 的 break 是不够，因为不带 label 的 break
+仅能跳出其所在的最内层循环。要想实现外层循环的跳出，我们还需给 break
+加上 label。我们来看一个具体的例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> gold = <span class="hljs-number">38</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> sl = [][]<span class="hljs-type">int</span>&#123;<br>        &#123;<span class="hljs-number">1</span>, <span class="hljs-number">34</span>, <span class="hljs-number">26</span>, <span class="hljs-number">35</span>, <span class="hljs-number">78</span>&#125;,<br>        &#123;<span class="hljs-number">3</span>, <span class="hljs-number">45</span>, <span class="hljs-number">13</span>, <span class="hljs-number">24</span>, <span class="hljs-number">99</span>&#125;,<br>        &#123;<span class="hljs-number">101</span>, <span class="hljs-number">13</span>, <span class="hljs-number">38</span>, <span class="hljs-number">7</span>, <span class="hljs-number">127</span>&#125;,<br>        &#123;<span class="hljs-number">54</span>, <span class="hljs-number">27</span>, <span class="hljs-number">40</span>, <span class="hljs-number">83</span>, <span class="hljs-number">81</span>&#125;,<br>    &#125;<br><br>outerloop:<br>    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(sl); i++ &#123;<br>        <span class="hljs-keyword">for</span> j := <span class="hljs-number">0</span>; j &lt; <span class="hljs-built_in">len</span>(sl[i]); j++ &#123;<br>            <span class="hljs-keyword">if</span> sl[i][j] == gold &#123;<br>                fmt.Printf(<span class="hljs-string">&quot;found gold at [%d, %d]\n&quot;</span>, i, j)<br>                <span class="hljs-keyword">break</span> outerloop<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>我们通过带有 label 的 break
+语句，就可以直接终结外层循环，从而从复杂多层次的嵌套循环中直接跳出，避免不必要的算力资源的浪费。</p>
+<h3 id="for-语句的常见坑">for 语句的常见“坑”</h3>
+<p><strong>问题一：循环变量的重用</strong> <strong>问题二：参与循环的是
+range 表达式的副本</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">for</span> i, v := <span class="hljs-keyword">range</span> a &#123; <span class="hljs-comment">// 是a的一个值拷贝</span><br>    <span class="hljs-keyword">if</span> i == <span class="hljs-number">0</span> &#123;<br>        a[<span class="hljs-number">1</span>] = <span class="hljs-number">12</span><br>        a[<span class="hljs-number">2</span>] = <span class="hljs-number">13</span><br>    &#125;<br>    r[i] = v<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>r中记录的还是原来的a，而不是修改后的</p>
+<p>解决方案：使用切片</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">for</span> i, v := <span class="hljs-keyword">range</span> a[:] &#123;<br>    <span class="hljs-keyword">if</span> i == <span class="hljs-number">0</span> &#123;<br>        a[<span class="hljs-number">1</span>] = <span class="hljs-number">12</span><br>        a[<span class="hljs-number">2</span>] = <span class="hljs-number">13</span><br>    &#125;<br>    r[i] = v<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>当进行 range
+表达式复制时，我们实际上复制的是一个切片，也就是表示切片的结构体。表示切片副本的结构体中的
+array，依旧指向原切片对应的底层数组，所以我们对切片副本的修改也都会反映到底层数组
+a 上去。而 v 再从切片副本结构体中 array
+指向的底层数组中，获取数组元素，也就得到了被修改后的元素值。</p>
+<p><strong>遍历 map 中元素的随机性</strong></p>
+<p>如果我们在循环的过程中，对 map
+进行了修改，那么这样修改的结果是否会影响后续迭代呢？这个结果和我们遍历
+map 一样，具有随机性。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> m = <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">int</span>&#123;<br>    <span class="hljs-string">&quot;tony&quot;</span>: <span class="hljs-number">21</span>,<br>    <span class="hljs-string">&quot;tom&quot;</span>:  <span class="hljs-number">22</span>,<br>    <span class="hljs-string">&quot;jim&quot;</span>:  <span class="hljs-number">23</span>,<br>&#125;<br><br>counter := <span class="hljs-number">0</span><br><span class="hljs-keyword">for</span> k, v := <span class="hljs-keyword">range</span> m &#123;<br>    <span class="hljs-keyword">if</span> counter == <span class="hljs-number">0</span> &#123;<br>        <span class="hljs-built_in">delete</span>(m, <span class="hljs-string">&quot;tony&quot;</span>)<br>    &#125;<br>    counter++<br>    fmt.Println(k, v)<br>&#125;<br>fmt.Println(<span class="hljs-string">&quot;counter is &quot;</span>, counter)<br></code></pre></div></td></tr></table></figure>
+<p>如果我们反复运行这个例子多次，会得到两个不同的结果。当
+k="tony"作为第一个迭代的元素时，我们将得到如下结果：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go">tony <span class="hljs-number">21</span><br>tom <span class="hljs-number">22</span><br>jim <span class="hljs-number">23</span><br>counter is  <span class="hljs-number">3</span><br><br><span class="hljs-comment">//or</span><br><br>tom <span class="hljs-number">22</span><br>jim <span class="hljs-number">23</span><br>counter is  <span class="hljs-number">2</span><br></code></pre></div></td></tr></table></figure>
+<p>考虑到上述这种随机性，我们日常编码遇到遍历 map 的同时，还需要对 map
+进行修改的场景的时候，要格外小心。</p>
+<h2 id="switch-语句">switch 语句</h2>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">switch</span> initStmt; expr &#123;<br>    <span class="hljs-keyword">case</span> expr1:<br>        <span class="hljs-comment">// 执行分支1</span><br>    <span class="hljs-keyword">case</span> expr2:<br>        <span class="hljs-comment">// 执行分支2</span><br>    <span class="hljs-keyword">case</span> expr3_1, expr3_2, expr3_3:<br>        <span class="hljs-comment">// 执行分支3</span><br>    <span class="hljs-keyword">case</span> expr4:<br>        <span class="hljs-comment">// 执行分支4</span><br>    ... ...<br>    <span class="hljs-keyword">case</span> exprN:<br>        <span class="hljs-comment">// 执行分支N</span><br>    <span class="hljs-keyword">default</span>: <br>        <span class="hljs-comment">// 执行默认分支</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>在有多个 case 执行分支的 switch 语句中，Go 是按什么次序对各个 case
+表达式进行求值，并且与 switch 表达式（expr）进行比较的？</p>
+<p>顺序执行，一旦匹配到对应case下面，后面的expr语句变不会执行；</p>
+<p>还有一点，无论 default 分支出现在什么位置，它都只会在所有 case
+都没有匹配上的情况下才会被执行的。</p>
+<h3 id="switch-语句的灵活性">switch 语句的灵活性</h3>
+<p><strong>switch
+语句各表达式的求值结果可以为各种类型值，只要它的类型支持比较操作就可以了</strong></p>
+<p><strong>switch 语句支持声明临时变量</strong></p>
+<p><strong>case 语句支持表达式列表</strong></p>
+<p><strong>取消了默认执行下一个 case 代码逻辑的语义</strong></p>
+<p>如果在少数场景下，你需要执行下一个 case 的代码逻辑，你可以显式使用 Go
+提供的关键字 fallthrough 来实现，这也是 Go“显式”设计哲学的一个体现。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">switch</span> switchexpr() &#123;<br>    <span class="hljs-keyword">case</span> case1():<br>        <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;exec case1&quot;</span>)<br>        <span class="hljs-keyword">fallthrough</span><br>    <span class="hljs-keyword">case</span> case2():<br>        <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;exec case2&quot;</span>)<br>        <span class="hljs-keyword">fallthrough</span><br>    <span class="hljs-keyword">default</span>:<br>        <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;exec default&quot;</span>)<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h3 id="type-switch">type switch</h3>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> x <span class="hljs-keyword">interface</span>&#123;&#125; = <span class="hljs-number">13</span><br>    <span class="hljs-keyword">switch</span> x.(<span class="hljs-keyword">type</span>) &#123;<br>    <span class="hljs-keyword">case</span> <span class="hljs-literal">nil</span>:<br>        <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;x is nil&quot;</span>)<br>    <span class="hljs-keyword">case</span> <span class="hljs-type">int</span>:<br>        <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;the type of x is int&quot;</span>)<br>    <span class="hljs-keyword">case</span> <span class="hljs-type">string</span>:<br>        <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;the type of x is string&quot;</span>)<br>    <span class="hljs-keyword">case</span> <span class="hljs-type">bool</span>:<br>        <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;the type of x is string&quot;</span>)<br>    <span class="hljs-keyword">default</span>:<br>        <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;don&#x27;t support the type&quot;</span>)<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>switch 关键字后面跟着的表达式为x.(type)，这种表达式形式是 switch
+语句专有的，而且也只能在 switch 语句中使用。这个表达式中的 x
+必须是一个接口类型变量，表达式的求值结果是这个接口类型变量对应的动态类型。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> x <span class="hljs-keyword">interface</span>&#123;&#125; = <span class="hljs-number">13</span><br>    <span class="hljs-keyword">switch</span> v := x.(<span class="hljs-keyword">type</span>) &#123;<br>    <span class="hljs-keyword">case</span> <span class="hljs-literal">nil</span>:<br>        <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;v is nil&quot;</span>)<br>    <span class="hljs-keyword">case</span> <span class="hljs-type">int</span>:<br>        <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;the type of v is int, v =&quot;</span>, v)<br>    <span class="hljs-keyword">case</span> <span class="hljs-type">string</span>:<br>        <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;the type of v is string, v =&quot;</span>, v)<br>    <span class="hljs-keyword">case</span> <span class="hljs-type">bool</span>:<br>        <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;the type of v is bool, v =&quot;</span>, v)<br>    <span class="hljs-keyword">default</span>:<br>        <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;don&#x27;t support the type&quot;</span>)<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这里我们将 switch 后面的表达式由x.(type)换成了v :=
+x.(type)。对于后者，你千万不要认为变量 v 存储的是类型信息，其实 v
+存储的是变量 x 的动态类型对应的值信息，这样我们在接下来的 case
+执行路径中就可以使用变量 v 中的值信息了。</p>
+<h1 id="函数">函数</h1>
+<h2 id="go-函数与函数声明">Go 函数与函数声明</h2>
+<p>函数对应的英文单词是 Function，Function
+这个单词原本是功能、职责的意思。编程语言使用 Function
+这个单词，表示将一个大问题分解后而形成的、若干具有特定功能或职责的小任务，可以说十分贴切。函数代表的小任务可以在一个程序中被多次使用，甚至可以在不同程序中被使用，因此函数的出现也提升了整个程序界代码复用的水平。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">FuncName</span><span class="hljs-params">(<span class="hljs-keyword">var</span> <span class="hljs-keyword">type</span>, ...)</span></span> (<span class="hljs-keyword">var</span> <span class="hljs-keyword">type</span>, err <span class="hljs-type">error</span>)&#123;<br>	<span class="hljs-comment">//函数体</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><strong>第一部分是关键字 func</strong>，Go 函数声明必须以关键字 func
+开始。</p>
+<p><strong>第二部分是函数名</strong>，函数名是指代函数定义的标识符，函数声明后，我们会通过函数名这个标识符来使用这个函数。在同一个
+Go 包中，函数名应该是唯一的，并且它也遵守 Go
+标识符的导出规则，也就是我们之前说的，首字母大写的函数名指代的函数是可以在包外使用的，小写的就只在包内可见。</p>
+<p><strong>第三部分是参数列表</strong>，参数列表中声明了我们将要在函数体中使用的各个参数。参数列表紧接在函数名的后面，并用一个括号包裹。它使用逗号作为参数间的分隔符，而且每个参数的参数名在前，参数类型在后，这和变量声明中变量名与类型的排列方式是一致的。</p>
+<p><strong>第四部分是返回值列表</strong>，返回值承载了函数执行后要返回给调用者的结果，返回值列表声明了这些返回值的类型，返回值列表的位置紧接在参数列表后面，两者之间用一个空格隔开。</p>
+<p><strong>放在一对大括号内的是函数体</strong>
+函数的具体实现都放在这里。不过，函数声明中的函数体是可选的。如果没有函数体，说明这个函数可能是在
+Go
+语言之外实现的，比如使用汇编语言实现，然后通过链接器将实现与声明中的函数名链接到一起。</p>
+<p>等价的变量声明 <figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> FuncName = <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(<span class="hljs-keyword">var</span> <span class="hljs-keyword">type</span>, ...)</span></span> (<span class="hljs-keyword">var</span> <span class="hljs-keyword">type</span>, err <span class="hljs-type">error</span>) &#123;&#125;<br></code></pre></div></td></tr></table></figure></p>
+<p>函数声明中的函数名其实就是变量名，函数声明中的 func
+关键字、参数列表和返回值列表共同构成了函数类型。而参数列表与返回值列表的组合也被称为函数签名，它是决定两个函数类型是否相同的决定因素。因此，函数类型也可以看成是由
+func 关键字与函数签名组合而成的。</p>
+<p>函数签名 <figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(<span class="hljs-keyword">type</span>, ...)</span></span> (<span class="hljs-keyword">type</span>, <span class="hljs-type">error</span>)<br></code></pre></div></td></tr></table></figure></p>
+<p>这样，如果两个函数类型的函数签名是相同的，即便参数列表中的参数名，以及返回值列表中的返回值变量名都是不同的，那么这两个函数类型也是相同类型，比如下面两个函数类型：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(a <span class="hljs-type">int</span>, b <span class="hljs-type">string</span>)</span></span> (results []<span class="hljs-type">string</span>, err <span class="hljs-type">error</span>)<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c <span class="hljs-type">int</span>, d <span class="hljs-type">string</span>)</span></span> (sl []<span class="hljs-type">string</span>, err <span class="hljs-type">error</span>)<br></code></pre></div></td></tr></table></figure>
+<p>如果我们把这两个函数类型的参数名与返回值变量名省略，那它们都是func
+(int, string) ([]string, error)，因此它们是相同的函数类型。</p>
+<p>到这里，我们可以得到这样一个结论：每个函数声明所定义的函数，仅仅是对应的函数类型的一个实例，就像var
+a int = 13这个变量声明语句中 a 是 int 类型的一个实例一样。</p>
+<p><strong>函数字面值（Function Literal）</strong>
+函数字面值由函数类型与函数体组成，它特别像一个没有函数名的函数声明，因此我们也叫它匿名函数。</p>
+<h2 id="函数参数">函数参数</h2>
+<p>在函数声明阶段，我们把参数列表中的参数叫做形式参数（Parameter，简称形参），在函数体中，我们使用的都是形参；而在函数实际调用时传入的参数被称为实际参数（Argument，简称实参）。当我们实际调用函数的时候，实参会传递给函数，并和形式参数逐一绑定，编译器会根据各个形参的类型与数量，来检查传入的实参的类型与数量是否匹配。只有匹配，程序才能继续执行函数调用，否则编译器就会报错。</p>
+<p>Go
+语言中，函数参数传递采用是值传递的方式。所谓“值传递”，就是将实际参数在内存中的表示逐位拷贝（Bitwise
+Copy）到形式参数中。对于像整型、数组、结构体这类类型，它们的内存表示就是它们自身的数据内容，因此当这些类型作为实参类型时，值传递拷贝的就是它们自身，传递的开销也与它们自身的大小成正比。</p>
+<p>但是像 string、切片、map
+这些类型就不是了，它们的内存表示对应的是它们数据内容的“描述符”。当这些类型作为实参类型时，值传递拷贝的也是它们数据内容的“描述符”，不包括数据内容本身，所以这些类型传递的开销是固定的，与数据内容大小无关。这种只拷贝“描述符”，不拷贝实际数据内容的拷贝过程，也被称为“浅拷贝”。</p>
+<p>不过函数参数的传递也有两个例外，当函数的形参为接口类型，或者形参是变长参数时，简单的值传递就不能满足要求了，这时
+Go 编译器会介入：对于类型为接口类型的形参，Go
+编译器会把传递的实参赋值给对应的接口类型形参；对于为变长参数的形参，Go
+编译器会将零个或多个实参按一定形式转换为对应的变长形参。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">myAppend</span><span class="hljs-params">(sl []<span class="hljs-type">int</span>, elems ...<span class="hljs-type">int</span>)</span></span> []<span class="hljs-type">int</span> &#123;<br>    fmt.Printf(<span class="hljs-string">&quot;%T\n&quot;</span>, elems) <span class="hljs-comment">// []int</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(elems) == <span class="hljs-number">0</span> &#123;<br>        <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;no elems to append&quot;</span>)<br>        <span class="hljs-keyword">return</span> sl<br>    &#125;<br><br>    sl = <span class="hljs-built_in">append</span>(sl, elems...)<br>    <span class="hljs-keyword">return</span> sl<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    sl := []<span class="hljs-type">int</span>&#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;<br>    sl = myAppend(sl) <span class="hljs-comment">// no elems to append</span><br>    fmt.Println(sl) <span class="hljs-comment">// [1 2 3]</span><br>    sl = myAppend(sl, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>)<br>    fmt.Println(sl) <span class="hljs-comment">// [1 2 3 4 5 6]</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>我们重点看一下代码中的 myAppend 函数，这个函数基于
+append，实现了向一个整型切片追加数据的功能。它支持变长参数，它的第二个形参
+elems 就是一个变长参数。myAppend 函数通过 Printf
+输出了变长参数的类型。执行这段代码，我们将看到变长参数 elems
+的类型为[]int。这也就说明，在 Go
+中，变长参数实际上是通过切片来实现的。所以，我们在函数体中，就可以使用切片支持的所有操作来操作变长参数，这会大大简化了变长参数的使用复杂度。比如
+myAppend 中，我们使用 len 函数就可以获取到传给变长参数的实参个数。</p>
+<h2 id="函数支持多返回值">函数支持多返回值</h2>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">foo</span><span class="hljs-params">()</span></span>                       <span class="hljs-comment">// 无返回值</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">foo</span><span class="hljs-params">()</span></span> <span class="hljs-type">error</span>                 <span class="hljs-comment">// 仅有一个返回值</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">foo</span><span class="hljs-params">()</span></span> (<span class="hljs-type">int</span>, <span class="hljs-type">string</span>, <span class="hljs-type">error</span>)  <span class="hljs-comment">// 有2或2个以上返回值</span><br></code></pre></div></td></tr></table></figure>
+<p>如果一个函数没有显式返回值，那么我们可以像第一种情况那样，在函数声明中省略返回值列表。而且，如果一个函数仅有一个返回值，那么通常我们在函数声明中，就不需要将返回值用括号括起来，如果是
+2 个或 2 个以上的返回值，那我们还是需要用括号括起来的</p>
+<p>在函数声明的返回值列表中，我们通常会像上面例子那样，仅列举返回值的类型，但我们也可以像
+fmt.Fprintf
+函数的返回值列表那样，为每个返回值声明变量名，这种带有名字的返回值被称为具名返回值（Named
+Return
+Value）。这种具名返回值变量可以像函数体中声明的局部变量一样在函数体内使用。</p>
+<p>当函数的返回值个数较多时，每次显式使用 return
+语句时都会接一长串返回值，这时，我们用具名返回值可以让函数实现的可读性更好一些，比如下面
+Go 标准库 time 包中的 parseNanoseconds 函数就是这样：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOROOT/src/time/format.go</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">parseNanoseconds</span><span class="hljs-params">(value <span class="hljs-type">string</span>, nbytes <span class="hljs-type">int</span>)</span></span> (ns <span class="hljs-type">int</span>, rangeErrString <span class="hljs-type">string</span>, err <span class="hljs-type">error</span>) &#123;<br>    <span class="hljs-keyword">if</span> !commaOrPeriod(value[<span class="hljs-number">0</span>]) &#123;<br>        err = errBad<br>        <span class="hljs-keyword">return</span><br>    &#125;<br>    <span class="hljs-keyword">if</span> ns, err = atoi(value[<span class="hljs-number">1</span>:nbytes]); err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-keyword">return</span><br>    &#125;<br>    <span class="hljs-keyword">if</span> ns &lt; <span class="hljs-number">0</span> || <span class="hljs-number">1e9</span> &lt;= ns &#123;<br>        rangeErrString = <span class="hljs-string">&quot;fractional second&quot;</span><br>        <span class="hljs-keyword">return</span><br>    &#125;<br><br>    scaleDigits := <span class="hljs-number">10</span> - nbytes<br>    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; scaleDigits; i++ &#123;<br>        ns *= <span class="hljs-number">10</span><br>    &#125;<br>    <span class="hljs-keyword">return</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h2 id="函数是一等公民">函数是“一等公民”</h2>
+<p>函数在 Go 语言中属于“一等公民（First-Class Citizen）”</p>
+<figure class="highlight"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs">如果一门编程语言对某种语言元素的创建和使用没有限制，我们可以像对待值（value）一样对待这种语法元素，那么我们就称这种语法元素是这门编程语言的“一等公民”。拥有“一等公民”待遇的语法元素可以存储在变量中，可以作为参数传递给函数，可以在函数内部创建并可以作为返回值从函数返回。<br></code></pre></div></td></tr></table></figure>
+<p><strong>特征一：Go 函数可以存储在变量中</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> (<br>    myFprintf = <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(w io.Writer, format <span class="hljs-type">string</span>, a ...<span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> (<span class="hljs-type">int</span>, <span class="hljs-type">error</span>) &#123;<br>        <span class="hljs-keyword">return</span> fmt.Fprintf(w, format, a...)<br>    &#125;<br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    fmt.Printf(<span class="hljs-string">&quot;%T\n&quot;</span>, myFprintf) <span class="hljs-comment">// func(io.Writer, string, ...interface &#123;&#125;) (int, error)</span><br>    myFprintf(os.Stdout, <span class="hljs-string">&quot;%s\n&quot;</span>, <span class="hljs-string">&quot;Hello, Go&quot;</span>) <span class="hljs-comment">// 输出Hello，Go</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>在这个例子中，我们把新创建的一个匿名函数赋值给了一个名为 myFprintf
+的变量，通过这个变量，我们便可以调用刚刚定义的匿名函数。然后我们再通过
+Printf 输出 myFprintf
+变量的类型，也会发现结果与我们预期的函数类型是相符的。</p>
+<p><strong>特征二：支持在函数内创建并通过返回值返回</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">setup</span><span class="hljs-params">(task <span class="hljs-type">string</span>)</span></span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;do some setup stuff for&quot;</span>, task)<br>    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>        <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;do some teardown stuff for&quot;</span>, task)<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    teardown := setup(<span class="hljs-string">&quot;demo&quot;</span>)<br>    <span class="hljs-keyword">defer</span> teardown()<br>    <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;do some bussiness stuff&quot;</span>)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这个例子，模拟了执行一些重要逻辑之前的上下文建立（setup），以及之后的上下文拆除（teardown）。在一些单元测试的代码中，我们也经常会在执行某些用例之前，建立此次执行的上下文（setup），并在这些用例执行后拆除上下文（teardown），避免这次执行对后续用例执行的干扰。我们在
+setup
+函数中创建了这次执行的上下文拆除函数，并通过返回值的形式，将这个拆除函数返回给了
+setup 函数的调用者。setup
+函数的调用者，在执行完对应这次执行上下文的重要逻辑后，再调用 setup
+函数返回的拆除函数，就可以完成对上下文的拆除了。</p>
+<p>从这段代码中我们也可以看到，setup
+函数中创建的拆除函数也是一个匿名函数，但和前面我们看到的匿名函数有一个不同，这个不同就在于这个匿名函数使用了定义它的函数
+setup 的局部变量 task，这样的匿名函数在 Go
+中也被称为闭包（Closure）。</p>
+<p><strong>特征三：作为参数传入函数</strong></p>
+<p>既然函数可以存储在变量中，也可以作为返回值返回，那我们可以理所当然地想到，把函数作为参数传入函数也是可行的。比如我们在日常编码时经常使用、标准库
+time 包的 AfterFunc
+函数，就是一个接受函数类型参数的典型例子。你可以看看下面这行代码，这里通过
+AfterFunc 函数设置了一个 2
+秒的定时器，并传入了时间到了后要执行的函数。这里传入的就是一个匿名函数：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go">time.AfterFunc(time.Second*<span class="hljs-number">2</span>, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123; <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;timer fired&quot;</span>) &#125;)<br></code></pre></div></td></tr></table></figure>
+<p><strong>特征四：拥有自己的类型</strong></p>
+<p>每个函数都和整型值、字符串值等一等公民一样，拥有自己的类型，也就是我们讲过的函数类型。我们甚至可以基于函数类型来自定义类型，就像基于整型、字符串类型等类型来自定义类型一样。下面代码中的
+HandlerFunc、visitFunc 就是 Go
+标准库中，基于函数类型进行自定义的类型：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOROOT/src/net/http/server.go</span><br><span class="hljs-keyword">type</span> HandlerFunc <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(ResponseWriter, *Request)</span></span><br><br><span class="hljs-comment">// $GOROOT/src/sort/genzfunc.go</span><br><span class="hljs-keyword">type</span> visitFunc <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(ast.Node)</span></span> ast.Visitor<br></code></pre></div></td></tr></table></figure>
+<h2 id="函数一等公民特性的高效运用">函数“一等公民”特性的高效运用</h2>
+<p><strong>应用一：函数类型的妙用</strong></p>
+<p>Go
+函数是“一等公民”，也就是说，它拥有自己的类型。而且，整型、字符串型等所有类型都可以进行的操作，比如显式转型，也同样可以用在函数类型上面，也就是说，函数也可以被显式转型。并且，这样的转型在特定的领域具有奇妙的作用，一个最为典型的示例就是标准库
+http 包中的 HandlerFunc 这个类型。我们来看一个使用了这个类型的例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">greeting</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;<br>    fmt.Fprintf(w, <span class="hljs-string">&quot;Welcome, Gopher!\n&quot;</span>)<br>&#125;                    <br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    http.ListenAndServe(<span class="hljs-string">&quot;:8080&quot;</span>, http.HandlerFunc(greeting))<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>可以进行这让转换的前提是，两个函数的函数签名是一致的，这类似与底层类型一直的类之间的相互转换</p>
+<p><strong>应用二：利用闭包简化函数调用</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">times</span><span class="hljs-params">(x, y <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> &#123;<br>	<span class="hljs-keyword">return</span> x * y<br>&#125;<br><br><br>times(<span class="hljs-number">2</span>, <span class="hljs-number">5</span>) <span class="hljs-comment">// 计算2 x 5</span><br>times(<span class="hljs-number">3</span>, <span class="hljs-number">5</span>) <span class="hljs-comment">// 计算3 x 5</span><br>times(<span class="hljs-number">4</span>, <span class="hljs-number">5</span>) <span class="hljs-comment">// 计算4 x 5</span><br></code></pre></div></td></tr></table></figure>
+<p>这是一个简单乘法运算，不过，有些场景存在一些高频使用的乘数，这个时候我们就没必要每次都传入这样的高频乘数了。那我们怎样能省去高频乘数的传入呢?
+我们看看下面这个新函数 partialTimes：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">partialTimes</span><span class="hljs-params">(x <span class="hljs-type">int</span>)</span></span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(y <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> &#123;<br>		<span class="hljs-keyword">return</span> times(x, y)<br>	&#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这里，partialTimes 的返回值是一个接受单一参数的函数，这个由
+partialTimes 函数生成的匿名函数，使用了 partialTimes 函数的参数
+x。按照前面的定义，这个匿名函数就是一个闭包。partialTimes
+实质上就是用来生成以 x
+为固定乘数的、接受另外一个乘数作为参数的、闭包函数的函数。当程序调用
+partialTimes(2) 时，partialTimes 实际上返回了一个调用 times(2,y)
+的函数，这个过程的逻辑类似于下面代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go">timesTwo = <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(y <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> &#123;<br>    <span class="hljs-keyword">return</span> times(<span class="hljs-number">2</span>, y)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这个时候，我们再看看如何使用 partialTimes，分别生成以 2、3、4
+为固定高频乘数的乘法函数，以及这些生成的乘法函数的使用方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>  timesTwo := partialTimes(<span class="hljs-number">2</span>)   <span class="hljs-comment">// 以高频乘数2为固定乘数的乘法函数</span><br>  timesThree := partialTimes(<span class="hljs-number">3</span>) <span class="hljs-comment">// 以高频乘数3为固定乘数的乘法函数</span><br>  timesFour := partialTimes(<span class="hljs-number">4</span>)  <span class="hljs-comment">// 以高频乘数4为固定乘数的乘法函数</span><br>  fmt.Println(timesTwo(<span class="hljs-number">5</span>))   <span class="hljs-comment">// 10，等价于times(2, 5)</span><br>  fmt.Println(timesTwo(<span class="hljs-number">6</span>))   <span class="hljs-comment">// 12，等价于times(2, 6)</span><br>  fmt.Println(timesThree(<span class="hljs-number">5</span>)) <span class="hljs-comment">// 15，等价于times(3, 5)</span><br>  fmt.Println(timesThree(<span class="hljs-number">6</span>)) <span class="hljs-comment">// 18，等价于times(3, 6)</span><br>  fmt.Println(timesFour(<span class="hljs-number">5</span>))  <span class="hljs-comment">// 20，等价于times(4, 5)</span><br>  fmt.Println(timesFour(<span class="hljs-number">6</span>))  <span class="hljs-comment">// 24，等价于times(4, 6)</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h2 id="错误处理">错误处理</h2>
+<p>Go
+函数增加了多返回值机制，来支持错误状态与返回信息的分离，并建议开发者把要返回给调用者的信息和错误状态标识，分别放在不同的返回值中。</p>
+<p>Go
+标准库中有一个fmt.Fprintf的函数，这个函数就是使用一个独立的表示错误状态的返回值（如下面代码中的
+err），解决了 fprintf 函数中错误状态值与返回信息耦合在一起的问题：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// fmt包</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Fprintf</span><span class="hljs-params">(w io.Writer, format <span class="hljs-type">string</span>, a ...<span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> (n <span class="hljs-type">int</span>, err <span class="hljs-type">error</span>)<br></code></pre></div></td></tr></table></figure>
+<p>在 Go 语言中，我们依然可以像传统的 C
+语言那样，用一个整型值来表示错误状态，但 Go 语言惯用法，是使用 error
+这个接口类型表示错误，并且按惯例，我们通常将 error
+类型返回值放在返回值列表的末尾，就像 fmt.Fprintf 函数声明中那样。</p>
+<h3 id="error-类型与错误值构造">error 类型与错误值构造</h3>
+<p>error 接口是 Go 原生内置的类型，它的定义如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOROOT/src/builtin/builtin.go</span><br><span class="hljs-keyword">type</span> <span class="hljs-keyword">interface</span> <span class="hljs-type">error</span> &#123;<br>    Error() <span class="hljs-type">string</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>任何实现了 error 的 Error 方法的类型的实例，都可以作为错误值赋值给
+error 接口变量。那这里。error接口的错误值构造：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go">err := errors.New(<span class="hljs-string">&quot;your first demo error&quot;</span>)<br>errWithCtx = fmt.Errorf(<span class="hljs-string">&quot;index %d is out of bounds&quot;</span>, i)<br></code></pre></div></td></tr></table></figure>
+<p>这两种方法实际上返回的是同一个实现了 error
+接口的类型的实例，这个未导出的类型就是errors.errorString，它的定义是这样的：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOROOT/src/errors/errors.go</span><br><br><span class="hljs-keyword">type</span> errorString <span class="hljs-keyword">struct</span> &#123;<br>    s <span class="hljs-type">string</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *errorString)</span></span> Error() <span class="hljs-type">string</span> &#123;<br>    <span class="hljs-keyword">return</span> e.s<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>大多数情况下，使用这两种方法构建的错误值就可以满足我们的需求了。但我们也要看到，虽然这两种构建错误值的方法很方便，但它们给错误处理者提供的错误上下文（Error
+Context）只限于以字符串形式呈现的信息，也就是 Error 方法返回的信息。</p>
+<p>但在一些场景下，错误处理者需要从错误值中提取出更多信息，帮助他选择错误处理路径，显然这两种方法就不能满足了。这个时候，我们可以自定义错误类型来满足这一需求。比如：标准库中的
+net 包就定义了一种携带额外错误上下文的错误类型：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOROOT/src/net/net.go</span><br><span class="hljs-keyword">type</span> OpError <span class="hljs-keyword">struct</span> &#123;<br>    Op <span class="hljs-type">string</span><br>    Net <span class="hljs-type">string</span><br>    Source Addr<br>    Addr Addr<br>    Err <span class="hljs-type">error</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这样，错误处理者就可以根据这个类型的错误值提供的额外上下文信息，比如
+Op、Net、Source 等，做出错误处理路径的选择，比如下面标准库中的代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOROOT/src/net/http/server.go</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">isCommonNetReadError</span><span class="hljs-params">(err <span class="hljs-type">error</span>)</span></span> <span class="hljs-type">bool</span> &#123;<br>    <span class="hljs-keyword">if</span> err == io.EOF &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>    &#125;<br>    <span class="hljs-keyword">if</span> neterr, ok := err.(net.Error); ok &amp;&amp; neterr.Timeout() &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>    &#125;<br>    <span class="hljs-keyword">if</span> oe, ok := err.(*net.OpError); ok &amp;&amp; oe.Op == <span class="hljs-string">&quot;read&quot;</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h3 id="error-类型的好处">error 类型的好处</h3>
+<p><strong>第一点：统一了错误类型</strong></p>
+<p>如果不同开发者的代码、不同项目中的代码，甚至标准库中的代码，都统一以
+error
+接口变量的形式呈现错误类型，就能在提升代码可读性的同时，还更容易形成统一的错误处理策略。</p>
+<p><strong>第二点：错误是值</strong></p>
+<p>我们构造的错误都是值，也就是说，即便赋值给 error
+这个接口类型变量，我们也可以像整型值那样对错误做“==”和“!=”的逻辑比较，函数调用者检视错误时的体验保持不变。</p>
+<p><strong>第三点：易扩展，支持自定义错误上下文。</strong></p>
+<p>虽然错误以 error
+接口变量的形式统一呈现，但我们很容易通过自定义错误类型来扩展我们的错误上下文，就像前面的
+Go 标准库的 OpError 类型那样。error
+接口是错误值的提供者与错误值的检视者之间的契约。error
+接口的实现者负责提供错误上下文，供负责错误处理的代码使用。这种错误具体上下文与作为错误值类型的
+error 接口类型的解耦，也体现了 Go 组合设计哲学中“正交”的理念。</p>
+<h3 id="error-设计策略">error 设计策略</h3>
+<p><strong>策略一：透明错误处理策略</strong></p>
+<p>简单来说，Go 语言中的错误处理，就是根据函数 / 方法返回的 error
+类型变量中携带的错误值信息做决策，并选择后续代码执行路径的过程。这样，最简单的错误策略莫过于完全不关心返回错误值携带的具体上下文信息，只要发生错误就进入唯一的错误处理执行路径，比如下面这段代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go">err := doSomething()<br><span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>    <span class="hljs-comment">// 不关心err变量底层错误值所携带的具体上下文信息</span><br>    <span class="hljs-comment">// 执行简单错误处理逻辑并返回</span><br>    ... ...<br>    <span class="hljs-keyword">return</span> err<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这也是 Go 语言中最常见的错误处理策略，80% 以上的 Go
+错误处理情形都可以归类到这种策略下。在这种策略下，由于错误处理方并不关心错误值的上下文，所以错误值的构造方（如上面的函数doSomething）可以直接使用
+Go
+标准库提供的两个基本错误值构造方法errors.New和fmt.Errorf来构造错误值，就像下面这样：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">doSomething</span><span class="hljs-params">(...)</span></span> <span class="hljs-type">error</span> &#123;<br>    ... ...<br>    <span class="hljs-keyword">return</span> errors.New(<span class="hljs-string">&quot;some error occurred&quot;</span>)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这样构造出的错误值代表的上下文信息，对错误处理方是透明的，因此这种策略称为“透明错误处理策略”。在错误处理方不关心错误值上下文的前提下，透明错误处理策略能最大程度地减少错误处理方与错误值构造方之间的耦合关系。</p>
+<p><strong>策略二：“哨兵”错误处理策略</strong></p>
+<p>当错误处理方不能只根据“透明的错误值”就做出错误处理路径选取的情况下，错误处理方会尝试对返回的错误值进行检视，于是就有可能出现下面代码中的反模式：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go">data, err := b.Peek(<span class="hljs-number">1</span>)<br><span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>    <span class="hljs-keyword">switch</span> err.Error() &#123;<br>    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;bufio: negative count&quot;</span>:<br>        <span class="hljs-comment">// ... ...</span><br>        <span class="hljs-keyword">return</span><br>    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;bufio: buffer full&quot;</span>:<br>        <span class="hljs-comment">// ... ...</span><br>        <span class="hljs-keyword">return</span><br>    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;bufio: invalid use of UnreadByte&quot;</span>:<br>        <span class="hljs-comment">// ... ...</span><br>        <span class="hljs-keyword">return</span><br>    <span class="hljs-keyword">default</span>:<br>        <span class="hljs-comment">// ... ...</span><br>        <span class="hljs-keyword">return</span><br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>简单来说，反模式就是，错误处理方以透明错误值所能提供的唯一上下文信息（描述错误的字符串），作为错误处理路径选择的依据。但这种“反模式”会造成严重的隐式耦合。这也就意味着，错误值构造方不经意间的一次错误描述字符串的改动，都会造成错误处理方处理行为的变化，并且这种通过字符串比较的方式，对错误值进行检视的性能也很差。</p>
+<p>那这有什么办法吗？Go
+标准库采用了定义导出的（Exported）“哨兵”错误值的方式，来辅助错误处理方检视（inspect）错误值并做出错误处理分支的决策，比如下面的
+bufio 包中定义的“哨兵错误”：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOROOT/src/bufio/bufio.go</span><br><span class="hljs-keyword">var</span> (<br>    ErrInvalidUnreadByte = errors.New(<span class="hljs-string">&quot;bufio: invalid use of UnreadByte&quot;</span>)<br>    ErrInvalidUnreadRune = errors.New(<span class="hljs-string">&quot;bufio: invalid use of UnreadRune&quot;</span>)<br>    ErrBufferFull        = errors.New(<span class="hljs-string">&quot;bufio: buffer full&quot;</span>)<br>    ErrNegativeCount     = errors.New(<span class="hljs-string">&quot;bufio: negative count&quot;</span>)<br>)<br></code></pre></div></td></tr></table></figure>
+<p>下面的代码片段利用了上面的哨兵错误，进行错误处理分支的决策：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go">data, err := b.Peek(<span class="hljs-number">1</span>)<br><span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>    <span class="hljs-keyword">switch</span> err &#123;<br>    <span class="hljs-keyword">case</span> bufio.ErrNegativeCount:<br>        <span class="hljs-comment">// ... ...</span><br>        <span class="hljs-keyword">return</span><br>    <span class="hljs-keyword">case</span> bufio.ErrBufferFull:<br>        <span class="hljs-comment">// ... ...</span><br>        <span class="hljs-keyword">return</span><br>    <span class="hljs-keyword">case</span> bufio.ErrInvalidUnreadByte:<br>        <span class="hljs-comment">// ... ...</span><br>        <span class="hljs-keyword">return</span><br>    <span class="hljs-keyword">default</span>:<br>        <span class="hljs-comment">// ... ...</span><br>        <span class="hljs-keyword">return</span><br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>可以看到，一般“哨兵”错误值变量以 ErrXXX
+格式命名。和透明错误策略相比，“哨兵”策略让错误处理方在有检视错误值的需求时候，可以“有的放矢”。不过，对于
+API 的开发者而言，暴露“哨兵”错误值也意味着这些错误值和包的公共函数 /
+方法一起成为了 API
+的一部分。一旦发布出去，开发者就要对它进行很好的维护。而“哨兵”错误值也让使用这些值的错误处理方对它产生了依赖。</p>
+<p>从 Go 1.13 版本开始，标准库 errors 包提供了 Is
+函数用于错误处理方对错误值的检视。Is 函数类似于把一个 error
+类型变量与“哨兵”错误值进行比较，比如下面代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 类似 if err == ErrOutOfBounds&#123; … &#125;</span><br><span class="hljs-keyword">if</span> errors.Is(err, ErrOutOfBounds) &#123;<br>    <span class="hljs-comment">// 越界的错误处理</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>不同的是，如果 error 类型变量的底层错误值是一个包装错误（Wrapped
+Error），errors.Is 方法会沿着该包装错误所在错误链（Error
+Chain)，与链上所有被包装的错误（Wrapped
+Error）进行比较，直至找到一个匹配的错误为止。下面是 Is
+函数应用的一个例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> ErrSentinel = errors.New(<span class="hljs-string">&quot;the underlying sentinel error&quot;</span>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	err1 := fmt.Errorf(<span class="hljs-string">&quot;wrap sentinel: %w&quot;</span>, ErrSentinel)<br>	err2 := fmt.Errorf(<span class="hljs-string">&quot;wrap err1: %w&quot;</span>, err1)<br>	<span class="hljs-built_in">println</span>(err2 == ErrSentinel) <span class="hljs-comment">//false</span><br>	<span class="hljs-keyword">if</span> errors.Is(err2, ErrSentinel) &#123;<br>	    <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;err2 is ErrSentinel&quot;</span>)<br>	    <span class="hljs-keyword">return</span><br>	&#125;<br>	 <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;err2 is not ErrSentinel&quot;</span>)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>如果你使用的是 Go 1.13
+及后续版本，建议尽量使用errors.Is方法去检视某个错误值是否就是某个预期错误值，或者包装了某个特定的“哨兵”错误值。</p>
+<p><strong>策略三：错误值类型检视策略</strong></p>
+<p>基于 Go
+标准库提供的错误值构造方法构造的“哨兵”错误值，除了让错误处理方可以“有的放矢”的进行值比较之外，并没有提供其他有效的错误上下文信息。那如果遇到错误处理方需要错误值提供更多的“错误上下文”的情况，上面这些错误处理策略和错误值构造方式都无法满足。这种情况下，我们需要通过自定义错误类型的构造错误值的方式，来提供更多的“错误上下文”信息。并且，由于错误值都通过
+error
+接口变量统一呈现，要得到底层错误类型携带的错误上下文信息，错误处理方需要使用
+Go 提供的类型断言机制（Type Assertion）或类型选择机制（Type
+Switch），这种错误处理方式，我称之为错误值类型检视策略。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOROOT/src/encoding/json/decode.go</span><br><span class="hljs-keyword">type</span> UnmarshalTypeError <span class="hljs-keyword">struct</span> &#123;<br>    Value  <span class="hljs-type">string</span>       <br>    Type   reflect.Type <br>    Offset <span class="hljs-type">int64</span>        <br>    Struct <span class="hljs-type">string</span>       <br>    Field  <span class="hljs-type">string</span>      <br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>错误处理方可以通过错误类型检视策略，获得更多错误值的错误上下文信息，下面就是利用这一策略的
+json 包的一个方法的实现：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOROOT/src/encoding/json/decode.go</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(d *decodeState)</span></span> addErrorContext(err <span class="hljs-type">error</span>) <span class="hljs-type">error</span> &#123;<br>    <span class="hljs-keyword">if</span> d.errorContext.Struct != <span class="hljs-literal">nil</span> || <span class="hljs-built_in">len</span>(d.errorContext.FieldStack) &gt; <span class="hljs-number">0</span> &#123;<br>        <span class="hljs-keyword">switch</span> err := err.(<span class="hljs-keyword">type</span>) &#123;<br>        <span class="hljs-keyword">case</span> *UnmarshalTypeError:<br>            err.Struct = d.errorContext.Struct.Name()<br>            err.Field = strings.Join(d.errorContext.FieldStack, <span class="hljs-string">&quot;.&quot;</span>)<br>            <span class="hljs-keyword">return</span> err<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> err<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>我们看到，这段代码通过类型 switch 语句得到了 err
+变量代表的动态类型和值，然后在匹配的 case
+分支中利用错误上下文信息进行处理。这里，一般自定义导出的错误类型以XXXError的形式命名。和“哨兵”错误处理策略一样，错误值类型检视策略，由于暴露了自定义的错误类型给错误处理方，因此这些错误类型也和包的公共函数
+/ 方法一起，成为了 API
+的一部分。一旦发布出去，开发者就要对它们进行很好的维护。而它们也让使用这些类型进行检视的错误处理方对其产生了依赖</p>
+<p>从 Go 1.13 版本开始，标准库 errors
+包提供了As函数给错误处理方检视错误值。As函数类似于通过类型断言判断一个
+error 类型变量是否为特定的自定义错误类型，如下面代码所示：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 类似 if e, ok := err.(*MyError); ok &#123; … &#125;</span><br><span class="hljs-keyword">var</span> e *MyError<br><span class="hljs-keyword">if</span> errors.As(err, &amp;e) &#123;<br>    <span class="hljs-comment">// 如果err类型为*MyError，变量e将被设置为对应的错误值</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> MyError <span class="hljs-keyword">struct</span> &#123;<br>    e <span class="hljs-type">string</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *MyError)</span></span> Error() <span class="hljs-type">string</span> &#123;<br>    <span class="hljs-keyword">return</span> e.e<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> err = &amp;MyError&#123;<span class="hljs-string">&quot;MyError error demo&quot;</span>&#125;<br>    err1 := fmt.Errorf(<span class="hljs-string">&quot;wrap err: %w&quot;</span>, err)<br>    err2 := fmt.Errorf(<span class="hljs-string">&quot;wrap err1: %w&quot;</span>, err1)<br>    <span class="hljs-keyword">var</span> e *MyError<br>    <span class="hljs-keyword">if</span> errors.As(err2, &amp;e) &#123;<br>        <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;MyError is on the chain of err2&quot;</span>)<br>        <span class="hljs-built_in">println</span>(e == err)                  <br>        <span class="hljs-keyword">return</span>                             <br>    &#125;                                      <br>    <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;MyError is not on the chain of err2&quot;</span>)<br>&#125; <br></code></pre></div></td></tr></table></figure>
+<p>errors.As函数会沿着该包装错误所在错误链，与链上所有被包装的错误的类型进行比较，直至找到一个匹配的错误类型，就像
+errors.Is 函数那样。</p>
+<p>errors.As函数沿着 err2
+所在错误链向下找到了被包装到最深处的错误值，并将 err2 与其类型 *
+MyError成功匹配。匹配成功后，errors.As 会将匹配到的错误值存储到 As
+函数的第二个参数中，这也是为什么println(e == err)输出 true 的原因。</p>
+<p>如果你使用的是 Go 1.13
+及后续版本，请尽量使用errors.As方法去检视某个错误值是否是某自定义错误类型的实例</p>
+<p><strong>策略四：错误行为特征检视策略</strong></p>
+<p>在 Go
+标准库中，我们发现了这样一种错误处理方式：将某个包中的错误类型归类，统一提取出一些公共的错误行为特征，并将这些错误行为特征放入一个公开的接口类型中。这种方式也被叫做错误行为特征检视策略。</p>
+<p>以标准库中的net包为例，它将包内的所有错误类型的公共行为特征抽象并放入net.Error这个接口中，如下面代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOROOT/src/net/net.go</span><br><span class="hljs-keyword">type</span> Error <span class="hljs-keyword">interface</span> &#123;<br>    <span class="hljs-type">error</span><br>    Timeout() <span class="hljs-type">bool</span>  <br>    Temporary() <span class="hljs-type">bool</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>我们看到，net.Error 接口包含两个用于判断错误行为特征的方法：Timeout
+用来判断是否是超时（Timeout）错误，Temporary
+用于判断是否是临时（Temporary）错误。而错误处理方只需要依赖这个公共接口，就可以检视具体错误值的错误行为特征信息，并根据这些信息做出后续错误处理分支选择的决策。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOROOT/src/net/http/server.go</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(srv *Server)</span></span> Serve(l net.Listener) <span class="hljs-type">error</span> &#123;<br>    ... ...<br>    <span class="hljs-keyword">for</span> &#123;<br>        rw, e := l.Accept()<br>        <span class="hljs-keyword">if</span> e != <span class="hljs-literal">nil</span> &#123;<br>            <span class="hljs-keyword">select</span> &#123;<br>            <span class="hljs-keyword">case</span> &lt;-srv.getDoneChan():<br>                <span class="hljs-keyword">return</span> ErrServerClosed<br>            <span class="hljs-keyword">default</span>:<br>            &#125;<br>            <span class="hljs-keyword">if</span> ne, ok := e.(net.Error); ok &amp;&amp; ne.Temporary() &#123;<br>                <span class="hljs-comment">// 注：这里对临时性(temporary)错误进行处理</span><br>                ... ...<br>                time.Sleep(tempDelay)<br>                <span class="hljs-keyword">continue</span><br>            &#125;<br>            <span class="hljs-keyword">return</span> e<br>        &#125;<br>        ...<br>    &#125;<br>    ... ...<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>在上面代码中，Accept
+方法实际上返回的错误类型为<code>*OpError</code>，它是 net
+包中的一个自定义错误类型，它实现了错误公共特征接口net.Error，如下代码所示：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOROOT/src/net/net.go</span><br><span class="hljs-keyword">type</span> OpError <span class="hljs-keyword">struct</span> &#123;<br>    ... ...<br>    <span class="hljs-comment">// Err is the error that occurred during the operation.</span><br>    Err <span class="hljs-type">error</span><br>&#125;<br><br><span class="hljs-keyword">type</span> temporary <span class="hljs-keyword">interface</span> &#123;<br>    Temporary() <span class="hljs-type">bool</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *OpError)</span></span> Temporary() <span class="hljs-type">bool</span> &#123;<br>  <span class="hljs-keyword">if</span> ne, ok := e.Err.(*os.SyscallError); ok &#123;<br>      t, ok := ne.Err.(temporary)<br>      <span class="hljs-keyword">return</span> ok &amp;&amp; t.Temporary()<br>  &#125;<br>  t, ok := e.Err.(temporary)<br>  <span class="hljs-keyword">return</span> ok &amp;&amp; t.Temporary()<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>因此，OpError
+实例可以被错误处理方通过net.Error接口的方法，判断它的行为是否满足
+Temporary 或 Timeout 特征。</p>
+<p>在错误处理策略选择上： *
+请尽量使用“透明错误”处理策略，降低错误处理方与错误值构造方之间的耦合； *
+如果可以通过错误值类型的特征进行错误检视，那么请尽量使用“错误行为特征检视策略”;
+*
+在上述两种策略无法实施的情况下，再使用“哨兵”策略和“错误值类型检视”策略；
+* Go 1.13
+及后续版本中，尽量用errors.Is和errors.As函数替换原先的错误检视比较语句。</p>
+<h2 id="go-语言中的异常">Go 语言中的异常</h2>
+<h3 id="函数健壮性设计原则">函数健壮性设计原则</h3>
+<p>原则一：不要相信任何外部输入的参数。</p>
+<p>原则二：不要忽略任何一个错误。</p>
+<p>原则三：不要假定异常不会发生。</p>
+<h3 id="认识-go-语言中的异常panic">认识 Go 语言中的异常：panic</h3>
+<p>panic 指的是 Go
+程序在运行时出现的一个异常情况。如果异常出现了，但没有被捕获并恢复，Go
+程序的执行就会被终止，即便出现异常的位置不在主 Goroutine
+中也会这样。</p>
+<p>在 Go 中，panic 主要有两类来源，一类是来自 Go 运行时，另一类则是 Go
+开发人员通过 panic 函数主动触发的。无论是哪种，一旦 panic 被触发，后续
+Go 程序的执行过程都是一样的，这个过程被 Go 语言称为 panicking。</p>
+<p>Go 官方文档以手工调用 panic 函数触发 panic 为例，对 panicking
+这个过程进行了诠释：当函数 F 调用 panic 函数时，函数 F
+的执行将停止。不过，函数 F 中已进行求值的 deferred
+函数都会得到正常执行，执行完这些 deferred 函数后，函数 F
+才会把控制权返还给其调用者。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">foo</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;call foo&quot;</span>)<br>    bar()<br>    <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;exit foo&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">bar</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;call bar&quot;</span>)<br>    <span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;panic occurs in bar&quot;</span>)<br>    zoo()<br>    <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;exit bar&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">zoo</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;call zoo&quot;</span>)<br>    <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;exit zoo&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;call main&quot;</span>)<br>    foo()<br>    <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;exit main&quot;</span>)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>上面这个例子中，从 Go 应用入口开始，函数的调用次序依次为main -&gt;
+foo -&gt; bar -&gt; zoo。在 bar 函数中，我们调用 panic 函数手动触发了
+panic。</p>
+<figure class="highlight gauss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs gauss"><span class="hljs-keyword">call</span> main<br><span class="hljs-keyword">call</span> foo<br><span class="hljs-keyword">call</span> <span class="hljs-built_in">bar</span><br>panic: panic occurs in <span class="hljs-built_in">bar</span><br></code></pre></div></td></tr></table></figure>
+<p>从 main 函数的视角来看，这就好比将它对 foo 函数的调用，换成了对 panic
+函数的调用一样。结果就是，main
+函数的执行也被终止了，于是整个程序异常退出，日志"exit
+main"也没有得到输出的机会。不过，Go 也提供了捕捉 panic
+并恢复程序正常执行秩序的方法，我们可以通过 recover
+函数来实现这一点。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">bar</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>        <span class="hljs-keyword">if</span> e := <span class="hljs-built_in">recover</span>(); e != <span class="hljs-literal">nil</span> &#123;<br>            fmt.Println(<span class="hljs-string">&quot;recover the panic:&quot;</span>, e)<br>        &#125;<br>    &#125;()<br><br>    <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;call bar&quot;</span>)<br>    <span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;panic occurs in bar&quot;</span>)<br>    zoo()<br>    <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;exit bar&quot;</span>)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>recover 是 Go 内置的专门用于恢复 panic 的函数，它必须被放在一个 defer
+函数中才能生效。如果 recover 捕捉到 panic，它就会返回以 panic
+的具体内容为错误上下文信息的错误值。如果没有 panic 发生，那么 recover
+将返回 nil。而且，如果 panic 被 recover 捕捉到，panic 引发的 panicking
+过程就会停止。</p>
+<h3 id="如何应对-panic">如何应对 panic？</h3>
+<ul>
+<li>第一点：评估程序对 panic
+的忍受度，不同应用对异常引起的程序崩溃退出的忍受度是不一样的。比如，一个单次运行于控制台窗口中的命令行交互类程序（CLI），和一个常驻内存的后端
+HTTP
+服务器程序，对异常崩溃的忍受度就是不同的。前者即便因异常崩溃，对用户来说也仅仅是再重新运行一次而已。但后者一旦崩溃，就很可能导致整个网站停止服务。所以，针对各种应用对
+panic 忍受度的差异，我们采取的应对 panic 的策略也应该有不同。</li>
+<li>第二点：提示潜在 bug。C 语言中有个很好用的辅助函数，断言（assert
+宏）。在使用 C
+编写代码时，我们经常在一些代码执行路径上，使用断言来表达这段执行路径上某种条件一定为真的信心。断言为真，则程序处于正确运行状态，断言为否就是出现了意料之外的问题，而这个问题很可能就是一个潜在的
+bug，这时我们可以借助断言信息快速定位到问题所在。</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><br><span class="hljs-comment">// $GOROOT/src/encoding/json/encode.go</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(w *reflectWithString)</span></span> resolve() <span class="hljs-type">error</span> &#123;<br>    ... ...<br>    <span class="hljs-keyword">switch</span> w.k.Kind() &#123;<br>    <span class="hljs-keyword">case</span> reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:<br>        w.ks = strconv.FormatInt(w.k.Int(), <span class="hljs-number">10</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>    <span class="hljs-keyword">case</span> reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:<br>        w.ks = strconv.FormatUint(w.k.Uint(), <span class="hljs-number">10</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>    &#125;<br>    <span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;unexpected map key type&quot;</span>)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>我们也看到，去掉这行代码并不会对resolve方法的逻辑造成任何影响，但真正出现问题时，开发人员就缺少了“断言”潜在
+bug 提醒的辅助支持了。在 Go 标准库中，大多数 panic
+的使用都是充当类似断言的作用的。</p>
+<ul>
+<li>第三点：不要混淆异常与错误。在日常编码中，我经常会看到一些 Go
+语言初学者，尤其是一些有过 Java 语言编程经验的程序员，会因为习惯了 Java
+那种基于try-catch-finally的错误处理思维，而将 Go panic 当成 Java
+的“checked exception”去用，这显然是混淆了 Go 中的异常与错误，这是 Go
+错误处理的一种反模式。在 Go 中，作为 API 函数的作者，你一定不要将 panic
+当作错误返回给 API 调用者。</li>
+</ul>
+<h2 id="使用-defer-简化函数实现">使用 defer 简化函数实现</h2>
+<p>对函数设计来说，如何实现简洁的目标是一个大话题。你可以从通用的设计原则去谈，比如函数要遵守单一职责，职责单一的函数肯定要比担负多种职责的函数更简单。你也可以从函数实现的规模去谈，比如函数体的规模要小，尽量控制在
+80 行代码之内等。但我们这个是 Go 语言的课程，所以我们的角度更侧重于 Go
+中是否有现成的语法元素，可以帮助我们简化 Go
+函数的设计和实现。我也把答案剧透给你，有的，它就是 defer。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">doSomething</span><span class="hljs-params">()</span></span> <span class="hljs-type">error</span> &#123;<br>    <span class="hljs-keyword">var</span> mu sync.Mutex<br>    mu.Lock()<br><br>    r1, err := OpenResource1()<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        mu.Unlock()<br>        <span class="hljs-keyword">return</span> err<br>    &#125;<br><br>    r2, err := OpenResource2()<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        r1.Close()<br>        mu.Unlock()<br>        <span class="hljs-keyword">return</span> err<br>    &#125;<br><br>    r3, err := OpenResource3()<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        r2.Close()<br>        r1.Close()<br>        mu.Unlock()<br>        <span class="hljs-keyword">return</span> err<br>    &#125;<br><br>    <span class="hljs-comment">// 使用r1，r2, r3</span><br>    err = doWithResources() <br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        r3.Close()<br>        r2.Close()<br>        r1.Close()<br>        mu.Unlock()<br>        <span class="hljs-keyword">return</span> err<br>    &#125;<br><br>    r3.Close()<br>    r2.Close()<br>    r1.Close()<br>    mu.Unlock()<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>我们看到，这类代码的特点就是在函数中会申请一些资源，并在函数退出前释放或关闭这些资源，比如这里的互斥锁
+mu 以及资源 r1~r3 就是这样。</p>
+<p>函数的实现需要确保，无论函数的执行流是按预期顺利进行，还是出现错误，这些资源在函数退出时都要被及时、正确地释放。为此，我们需要尤为关注函数中的错误处理，在错误处理时不能遗漏对资源的释放。</p>
+<p>但这样的要求，就导致我们在进行资源释放，尤其是有多个资源需要释放的时候，比如上面示例那样，会大大增加开发人员的心智负担。同时当待释放的资源个数较多时，整个代码逻辑就会变得十分复杂，程序可读性、健壮性也会随之下降。但即便如此，如果函数实现中的某段代码逻辑抛出
+panic，传统的错误处理机制依然没有办法捕获它并尝试从 panic 恢复。</p>
+<p>defer 是 Go 语言提供的一种延迟调用机制，defer
+的运作离不开函数。怎么理解呢？这句话至少有以下两点含义： * 在 Go
+中，只有在函数（和方法）内部才能使用 defer； * defer
+关键字后面只能接函数（或方法），这些函数被称为 deferred 函数。defer
+将它们注册到其所在 Goroutine 中，用于存放 deferred
+函数的栈数据结构中，这些 deferred 函数将在执行 defer
+的函数退出前，按后进先出（LIFO）的顺序被程序调度执行</p>
+<p>而且，无论是执行到函数体尾部返回，还是在某个错误处理分支显式
+return，又或是出现 panic，已经存储到 deferred
+函数栈中的函数，都会被调度执行。所以说，deferred
+函数是一个可以在任何情况下为函数进行收尾工作的好“伙伴”。</p>
+<p>刚才那个例子可以改成</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">doSomething</span><span class="hljs-params">()</span></span> <span class="hljs-type">error</span> &#123;<br>    <span class="hljs-keyword">var</span> mu sync.Mutex<br>    mu.Lock()<br>    <span class="hljs-keyword">defer</span> mu.Unlock()<br><br>    r1, err := OpenResource1()<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-keyword">return</span> err<br>    &#125;<br>    <span class="hljs-keyword">defer</span> r1.Close()<br><br>    r2, err := OpenResource2()<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-keyword">return</span> err<br>    &#125;<br>    <span class="hljs-keyword">defer</span> r2.Close()<br><br>    r3, err := OpenResource3()<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-keyword">return</span> err<br>    &#125;<br>    <span class="hljs-keyword">defer</span> r3.Close()<br><br>    <span class="hljs-comment">// 使用r1，r2, r3</span><br>    <span class="hljs-keyword">return</span> doWithResources() <br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>我们看到，使用 defer
+后对函数实现逻辑的简化是显而易见的。而且，这里资源释放函数的 defer
+注册动作，紧邻着资源申请成功的动作，这样成对出现的惯例就极大降低了遗漏资源释放的可能性，我们开发人员也不用再小心翼翼地在每个错误处理分支中检查是否遗漏了某个资源的释放动作。同时，代码的简化也意味代码可读性的提高，以及代码健壮度的增强。</p>
+<h3 id="defer-使用的几个注意事项">defer 使用的几个注意事项</h3>
+<ul>
+<li>第一点：明确哪些函数可以作为 deferred
+函数。对于自定义的函数或方法，defer
+可以给与无条件的支持，但是对于有返回值的自定义函数或方法，返回值会在
+deferred
+函数被调度执行的时候被自动丢弃。append、cap、len、make、new、imag
+等内置函数都是不能直接作为 deferred 函数的，而
+close、copy、delete、print、recover 等内置函数则可以直接被 defer 设置为
+deferred 函数。</li>
+<li>第二点：注意 defer 关键字后面表达式的求值时机。defer
+关键字后面的表达式，是在将 deferred 函数注册到 deferred
+函数栈的时候进行求值的。</li>
+<li>第三点：知晓 defer 带来的性能损耗。在 Go 1.13 前的版本中，defer
+带来的开销还是很大的。使用 defer 的函数的执行时间是没有使用 defer 函数的
+8 倍左右。但从 Go 1.13 版本开始，Go 核心团队对 defer
+性能进行了多次优化，到现在的 Go 1.17 版本，defer
+的开销已经足够小了。</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/">Go语言学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Go/">Go</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022-05/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Go语言学习笔记-结构体、方法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022-05/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02/">
+                        <span class="hidden-mobile">Go语言学习笔记-复合类型</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        豫ICP备2022006334号-1
+      </a>
+    </span>
+    
+      
+        <span>
+          <a
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=41900102411004"
+            rel="nofollow noopener"
+            class="beian-police"
+            target="_blank"
+          >
+            
+              <span style="visibility: hidden; width: 0">|</span>
+              <img src="/images/system/beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+            
+            <span>豫公网安备 41900102411004号</span>
+          </a>
+        </span>
+      
+    
+  </div>
+
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

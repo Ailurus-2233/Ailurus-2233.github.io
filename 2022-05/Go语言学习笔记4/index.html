@@ -1,0 +1,923 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/system/icon.jpg">
+  <link rel="icon" href="/images/system/icon.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Ailurus">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="整理学习go基础的过程中，一些基础语法以及相关的问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go语言学习笔记-结构体、方法">
+<meta property="og:url" content="http://blog.ailurus2233.site/2022-05/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04/index.html">
+<meta property="og:site_name" content="Ailurusの客栈">
+<meta property="og:description" content="整理学习go基础的过程中，一些基础语法以及相关的问题">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-06T08:34:59.000Z">
+<meta property="article:modified_time" content="2022-05-06T08:42:09.208Z">
+<meta property="article:tag" content="Go">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>Go语言学习笔记-结构体、方法 - Ailurusの客栈</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"blog.ailurus2233.site","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"|","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ailurus&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/system/background.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Go语言学习笔记-结构体、方法">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Ailurus
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-05-06 16:34" pubdate>
+        2022年5月6日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      18k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      149 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Go语言学习笔记-结构体、方法</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年5月6日 下午
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="类型定义type-definition">类型定义（Type Definition）</h1>
+<p><strong>自定义一个新类型</strong></p>
+<p>这也是我们最常用的类型定义方法。在这种方法中，我们会使用关键字type
+来定义一个新类型 T，具体形式是这样的：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> T S <span class="hljs-comment">// 定义一个新类型T</span><br></code></pre></div></td></tr></table></figure>
+<p>在这里，S 可以是任何一个已定义的类型，包括 Go
+原生类型，或者是其他已定义的自定义类型，我们来演示一下这两种情况：
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> T1 <span class="hljs-type">int</span> <br><span class="hljs-keyword">type</span> T2 T1  <br></code></pre></div></td></tr></table></figure></p>
+<p>这段代码中，新类型 T1 是基于 Go 原生类型 int
+定义的新自定义类型，而新类型 T2 则是基于刚刚定义的类型
+T1，定义的新类型。</p>
+<p>这里我们引入一个新概念，底层类型。如果一个新类型是基于某个 Go
+原生类型定义的，那么我们就叫 Go 原生类型为新类型的底层类型（Underlying
+Type)。比如这个例子中，类型 int 就是类型 T1 的底层类型。底层类型在 Go
+语言中有重要作用，它被用来判断两个类型本质上是否相同（Identical）。</p>
+<p>本质上相同的两个类型，它们的变量可以通过显式转型进行相互赋值，相反，如果本质上是不同的两个类型，它们的变量间连显式转型都不可能，更不要说相互赋值了。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> T1 <span class="hljs-type">int</span><br><span class="hljs-keyword">type</span> T2 T1<br><span class="hljs-keyword">type</span> T3 <span class="hljs-type">string</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> n1 T1<br>    <span class="hljs-keyword">var</span> n2 T2 = <span class="hljs-number">5</span><br>    n1 = T1(n2)  <span class="hljs-comment">// ok</span><br>    <br>    <span class="hljs-keyword">var</span> s T3 = <span class="hljs-string">&quot;hello&quot;</span><br>    n1 = T1(s) <span class="hljs-comment">// 错误：cannot convert s (type T3) to type T1</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>除了基于已有类型定义新类型之外，我们还可以基于类型字面值来定义新类型，这种方式多用于自定义一个新的复合类型，比如：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> M <span class="hljs-keyword">map</span>[<span class="hljs-type">int</span>]<span class="hljs-type">string</span><br><span class="hljs-keyword">type</span> S []<span class="hljs-type">string</span><br></code></pre></div></td></tr></table></figure>
+<p>和变量声明支持使用 var 块的方式类似，类型定义也支持通过 type
+块的方式进行，比如我们可以把上面代码中的 T1、T2 和 T3 的定义放在同一个
+type 块中：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> (<br>   T1 <span class="hljs-type">int</span><br>   T2 T1<br>   T3 <span class="hljs-type">string</span><br>)<br></code></pre></div></td></tr></table></figure>
+<p><strong>类型别名（Type Alias）</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> T = S <span class="hljs-comment">// type alias</span><br></code></pre></div></td></tr></table></figure>
+<p>我们看到，与前面的第一种类型定义相比，类型别名的形式只是多了一个等号，但正是这个等号让新类型
+T 与原类型 S 完全等价。完全等价的意思就是，类型别名并没有定义出新类型，T
+与 S 实际上就是同一种类型，它们只是一种类型的两个名字罢了</p>
+<h1 id="结构体">结构体</h1>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> T <span class="hljs-keyword">struct</span> &#123;<br>    Field1 T1<br>    Field2 T2<br>    ... ...<br>    FieldN Tn<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>根据这个定义，我们会得到一个名为 T 的结构体类型，定义中 struct
+关键字后面的大括号包裹的内容就是一个类型字面值。我们看到这个类型字面值由若干个字段（field）聚合而成，每个字段有自己的名字与类型，并且在一个结构体中，每个字段的名字应该都是唯一的。</p>
+<p>我们前面提到过对现实世界的书进行抽象的情况，其实用结构体类型就可以实现，比如这里，我就用前面的典型方法定义了一个结构体：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> book<br><br><span class="hljs-keyword">type</span> Book <span class="hljs-keyword">struct</span> &#123;<br>     Title <span class="hljs-type">string</span>              <span class="hljs-comment">// 书名</span><br>     Pages <span class="hljs-type">int</span>                 <span class="hljs-comment">// 书的页数</span><br>     Indexes <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">int</span>    <span class="hljs-comment">// 书的索引</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这样，只要其他包导入了包 book，我们就可以在这些包中直接引用类型名
+Book，也可以通过 Book 类型变量引用 <code>Name</code>、<code>Pages</code>
+等字段，就像下面代码中这样：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;.../book&quot;</span><br><br><span class="hljs-keyword">var</span> b book.Book<br>b.Title = <span class="hljs-string">&quot;The Go Programming Language&quot;</span><br>b.Pages = <span class="hljs-number">800</span><br></code></pre></div></td></tr></table></figure>
+<p>如果结构体类型只在它定义的包内使用，那么我们可以将类型名的首字母小写；如果你不想将结构体类型中的某个字段暴露给其他包，那么我们同样可以把这个字段名字的首字母小写。</p>
+<p>除了通过类型字面值来定义结构体这种典型操作外，我们还有另外几种特殊的情况。</p>
+<p><strong>定义一个空结构体</strong></p>
+<p>我们可以定义一个空结构体，也就是没有包含任何字段的结构体类型，就像下面示例代码这样：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Empty <span class="hljs-keyword">struct</span>&#123;&#125; <span class="hljs-comment">// Empty是一个不包含任何字段的空结构体类型</span><br></code></pre></div></td></tr></table></figure>
+<p>空结构体类型有什么用呢？我们继续看下面代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> s Empty<br><span class="hljs-built_in">println</span>(unsafe.Sizeof(s)) <span class="hljs-comment">// 0</span><br></code></pre></div></td></tr></table></figure>
+<p>我们看到，输出的空结构体类型变量的大小为
+0，也就是说，空结构体类型变量的内存占用为
+0。基于空结构体类型内存零开销这样的特性，我们在日常 Go
+开发中会经常使用空结构体类型元素，作为一种“事件”信息进行 Goroutine
+之间的通信，就像下面示例代码这样：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> c = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> Empty) <span class="hljs-comment">// 声明一个元素类型为Empty的channel</span><br>c&lt;-Empty&#123;&#125;               <span class="hljs-comment">// 向channel写入一个“事件”</span><br></code></pre></div></td></tr></table></figure>
+<p>这种以空结构体为元素类建立的 channel，是目前能实现的、内存占用最小的
+Goroutine 间通信方式。</p>
+<p><strong>使用其他结构体作为自定义结构体中字段的类型。</strong></p>
+<p>我们看这段代码，这里结构体类型 Book 的字段 Author
+的类型，就是另外一个结构体类型 Person：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Person <span class="hljs-keyword">struct</span> &#123;<br>    Name <span class="hljs-type">string</span><br>    Phone <span class="hljs-type">string</span><br>    Addr <span class="hljs-type">string</span><br>&#125;<br><br><span class="hljs-keyword">type</span> Book <span class="hljs-keyword">struct</span> &#123;<br>    Title <span class="hljs-type">string</span><br>    Author Person<br>    ... ...<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>如果我们要访问 Book 结构体字段 Author 中的 Phone
+字段，我们可以这样操作：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> book Book <br><span class="hljs-built_in">println</span>(book.Author.Phone)<br></code></pre></div></td></tr></table></figure>
+<p>不过，对于包含结构体类型字段的结构体类型来说，Go
+还提供了一种更为简便的定义方法，那就是我们可以无需提供字段的名字，只需要使用其类型就可以了，以上面的
+Book 结构体定义为例，我们可以用下面的方式提供一个等价的定义：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Book <span class="hljs-keyword">struct</span> &#123;<br>    Title <span class="hljs-type">string</span><br>    Person<br>    ... ...<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>以这种方式定义的结构体字段，我们叫做嵌入字段（Embedded
+Field）。我们也可以将这种字段称为匿名字段，或者把类型名看作是这个字段的名字。如果我们要访问
+Person 中的 Phone 字段，我们可以通过下面两种方式进行：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> book Book <br><span class="hljs-built_in">println</span>(book.Person.Phone) <span class="hljs-comment">// 将类型名当作嵌入字段的名字</span><br><span class="hljs-built_in">println</span>(book.Phone)        <span class="hljs-comment">// 支持直接访问嵌入字段所属类型中字段</span><br></code></pre></div></td></tr></table></figure>
+<p>第一种方式显然是通过把类型名当作嵌入字段的名字来进行操作的，而第二种方式更像是一种“语法糖”，我们可以“绕过”Person
+类型这一层，直接访问 Person 中的字段。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ad-note">Go 语言不支持这种在结构体类型定义中，递归地放入其自身类型字段的定义方式。面对上面的示例代码，编译器就会给出“invalid recursive type T”的错误信息。<br></code></pre></div></td></tr></table></figure>
+<p>同样，下面这两个结构体类型 T1 与 T2
+的定义也存在递归的情况，所以这也是不合法的。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> T1 <span class="hljs-keyword">struct</span> &#123;<br>  t2 T2<br>&#125;<br><br><span class="hljs-keyword">type</span> T2 <span class="hljs-keyword">struct</span> &#123;<br>  t1 T1<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>虽然我们不能在结构体类型 T 定义中，拥有以自身类型 T
+定义的字段，但我们却可以拥有自身类型的指针类型、以自身类型为元素类型的切片类型，以及以自身类型作为
+value 类型的 map 类型的字段，比如这样：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> T <span class="hljs-keyword">struct</span> &#123;<br>    t  *T           <span class="hljs-comment">// ok</span><br>    st []T          <span class="hljs-comment">// ok</span><br>    m  <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]T <span class="hljs-comment">// ok</span><br>&#125;     <br></code></pre></div></td></tr></table></figure>
+<p>一个类型，它所占用的大小是固定的，因此一个结构体定义好的时候，其大小是固定的。
+但是，如果结构体里面套结构体，那么在计算该结构体占用大小的时候，就会成死循环。但如果是指针、切片、map等类型，其本质都是一个int大小(指针，4字节或者8字节，与操作系统有关)，因此该结构体的大小是固定的，记得老师前几节课讲类型的时候说过，类型就能决定内存占用的大小。
+因此，结构体是可以接口自身类型的指针类型、以自身类型为元素类型的切片类型，以及以自身类型作为
+value 类型的 map 类型的字段，而自己本身不行。</p>
+<h2 id="结构体变量的声明与初始化">结构体变量的声明与初始化</h2>
+<p>和其他所有变量的声明一样，我们也可以使用标准变量声明语句，或者是短变量声明语句声明一个结构体类型的变量：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Book <span class="hljs-keyword">struct</span> &#123;<br>    ...<br>&#125;<br><br><span class="hljs-keyword">var</span> book Book<br><span class="hljs-keyword">var</span> book = Book&#123;&#125;<br>book := Book&#123;&#125;<br></code></pre></div></td></tr></table></figure>
+<p>不过，这里要注意，我们在前面说过，结构体类型通常是对真实世界复杂事物的抽象，这和简单的数值、字符串、数组
+/
+切片等类型有所不同，结构体类型的变量通常都要被赋予适当的初始值后，才会有合理的意义。</p>
+<p><strong>零值初始化</strong></p>
+<p>零值初始化说的是使用结构体的零值作为它的初始值。对于 Go
+原生类型来说，这个默认值也称为零值。Go
+结构体类型由若干个字段组成，当这个结构体类型变量的各个字段的值都是零值时，我们就说这个结构体类型变量处于零值状态。</p>
+<p>前面提到过，结构体类型的零值变量，通常不具有或者很难具有合理的意义，比如通过下面代码得到的零值
+book 变量就是这样：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> book Book <span class="hljs-comment">// book为零值结构体变量</span><br></code></pre></div></td></tr></table></figure>
+<p>如果一种类型采用零值初始化得到的零值变量，是有意义的，而且是直接可用的，称这种类型为“零值可用”类型。可以说，定义零值可用类型是简化代码、改善开发者使用体验的一种重要的手段。</p>
+<p><strong>使用复合字面值</strong></p>
+<p>最简单的对结构体变量进行显式初始化的方式，就是按顺序依次给每个结构体字段进行赋值，比如下面的代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Book <span class="hljs-keyword">struct</span> &#123;<br>    Title <span class="hljs-type">string</span>              <span class="hljs-comment">// 书名</span><br>    Pages <span class="hljs-type">int</span>                 <span class="hljs-comment">// 书的页数</span><br>    Indexes <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">int</span>    <span class="hljs-comment">// 书的索引</span><br>&#125;<br><br><span class="hljs-keyword">var</span> book = Book&#123;<span class="hljs-string">&quot;The Go Programming Language&quot;</span>, <span class="hljs-number">700</span>, <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">int</span>)&#125;<br></code></pre></div></td></tr></table></figure>
+<p>我们依然可以用这种方法给结构体的每一个字段依次赋值，但这种方法也有很多问题：
+*
+首先，当结构体类型定义中的字段顺序发生变化，或者字段出现增删操作时，我们就需要手动调整该结构体类型变量的显式初始化代码，让赋值顺序与调整后的字段顺序一致。
+*
+其次，当一个结构体的字段较多时，这种逐一字段赋值的方式实施起来就会比较困难，而且容易出错，开发人员需要来回对照结构体类型中字段的类型与顺序，谨慎编写字面值表达式。
+*
+最后，一旦结构体中包含非导出字段，那么这种逐一字段赋值的方式就不再被支持了，编译器会报错：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> T <span class="hljs-keyword">struct</span> &#123;<br>    F1 <span class="hljs-type">int</span><br>    F2 <span class="hljs-type">string</span><br>    f3 <span class="hljs-type">int</span><br>    F4 <span class="hljs-type">int</span><br>    F5 <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-keyword">var</span> t = T&#123;<span class="hljs-number">11</span>, <span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-number">13</span>&#125; <span class="hljs-comment">// 错误：implicit assignment of unexported field &#x27;f3&#x27; in T literal</span><br>或<br><span class="hljs-keyword">var</span> t = T&#123;<span class="hljs-number">11</span>, <span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-number">13</span>, <span class="hljs-number">14</span>, <span class="hljs-number">15</span>&#125; <span class="hljs-comment">// 错误：implicit assignment of unexported field &#x27;f3&#x27; in T literal</span><br></code></pre></div></td></tr></table></figure>
+<p>Go 语言并不推荐我们按字段顺序对一个结构体类型变量进行显式初始化，甚至
+Go 官方还在提供的 go vet
+工具中专门内置了一条检查规则：“composites”，用来静态检查代码中结构体变量初始化是否使用了这种方法，一旦发现，就会给出警告。</p>
+<p>Go
+推荐我们用“field:value”形式的复合字面值，对结构体类型变量进行显式初始化，这种方式可以降低结构体类型使用者和结构体类型设计者之间的耦合，这也是
+Go 语言的惯用法。这里，我们用“field:value”形式复合字面值，对上面的类型 T
+的变量进行初始化看看：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> t = T&#123;<br>    F2: <span class="hljs-string">&quot;hello&quot;</span>,<br>    F1: <span class="hljs-number">11</span>,<br>    F4: <span class="hljs-number">14</span>,<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>使用这种“field:value”形式的复合字面值对结构体类型变量进行初始化，非常灵活。和之前的顺序复合字面值形式相比，“field:value”形式字面值中的字段可以以任意次序出现。未显式出现在字面值中的结构体字段（比如上面例子中的
+F5）将采用它对应类型的零值。</p>
+<p>复合字面值作为结构体类型变量初值被广泛使用，即便结构体采用类型零值时，我们也会使用复合字面值的形式，较少使用
+new 这一个 Go 预定义的函数来创建结构体变量实例。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go">t := T&#123;&#125;<br>tp := <span class="hljs-built_in">new</span>(T)<br></code></pre></div></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ad-note">这里值得我们注意的是，我们不能用从其他包导入的结构体中的未导出字段，来作为复合字面值中的 field。这会导致编译错误，因为未导出字段是不可见的。<br></code></pre></div></td></tr></table></figure>
+<p><strong>构造函数</strong></p>
+<p>使用特定的构造函数创建并初始化结构体变量的例子，并不罕见。在 Go
+标准库中就有很多，其中 time.Timer
+这个结构体就是一个典型的例子，它的定义如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOROOT/src/time/sleep.go</span><br><span class="hljs-keyword">type</span> runtimeTimer <span class="hljs-keyword">struct</span> &#123;<br>    pp       <span class="hljs-type">uintptr</span><br>    when     <span class="hljs-type">int64</span><br>    period   <span class="hljs-type">int64</span><br>    f        <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;, <span class="hljs-type">uintptr</span>)</span></span> <br>    arg      <span class="hljs-keyword">interface</span>&#123;&#125;<br>    seq      <span class="hljs-type">uintptr</span><br>    nextwhen <span class="hljs-type">int64</span><br>    status   <span class="hljs-type">uint32</span><br>&#125;<br><br><span class="hljs-keyword">type</span> Timer <span class="hljs-keyword">struct</span> &#123;<br>    C &lt;-<span class="hljs-keyword">chan</span> Time<br>    r runtimeTimer<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>Timer 结构体中包含了一个非导出字段 r，r 的类型为另外一个结构体类型
+runtimeTimer。这个结构体更为复杂，而且我们一眼就可以看出来，这个
+runtimeTimer 结构体不是零值可用的，那我们在创建一个 Timer
+类型变量时就没法使用显式复合字面值的方式了。这个时候，Go
+标准库提供了一个 Timer 结构体专用的构造函数 NewTimer，它的实现如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><br><span class="hljs-comment">// $GOROOT/src/time/sleep.go</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewTimer</span><span class="hljs-params">(d Duration)</span></span> *Timer &#123;<br>    c := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> Time, <span class="hljs-number">1</span>)<br>    t := &amp;Timer&#123;<br>        C: c,<br>        r: runtimeTimer&#123;<br>            when: when(d),<br>            f:    sendTime,<br>            arg:  c,<br>        &#125;,<br>    &#125;<br>    startTimer(&amp;t.r)<br>    <span class="hljs-keyword">return</span> t<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>我们看到，NewTimer 这个函数只接受一个表示定时时间的参数
+d，在经过一个复杂的初始化过程后，它返回了一个处于可用状态的 Timer
+类型指针实例。像这类通过专用构造函数进行结构体类型变量创建、初始化的例子还有很多，我们可以总结一下，它们的专用构造函数大多都符合这种模式：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewT</span><span class="hljs-params">(field1, field2, ...)</span></span> *T &#123;<br>    ... ...<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这里，NewT 是结构体类型 T 的专用构造函数，它的参数列表中的参数通常与
+T 定义中的导出字段相对应，返回值则是一个 T 指针类型的变量。T
+的非导出字段在 NewT 内部进行初始化，一些需要复杂初始化逻辑的字段也会在
+NewT 内部完成初始化。这样，我们只要调用 NewT 函数就可以得到一个可用的 T
+指针类型变量了。</p>
+<h1 id="方法">方法</h1>
+<p><strong>方法的一般声明形式</strong> <figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(src *Server)</span></span> ListenAndServeTLS(certFile, keyFile String) <span class="hljs-type">error</span> &#123;<br>	<span class="hljs-comment">//method block</span><br>&#125;<br></code></pre></div></td></tr></table></figure></p>
+<p>Go
+中方法的声明和函数的声明有很多相似之处，从上面这张图我们可以看到，和由五个部分组成的函数声明不同，Go
+方法的声明有六个组成部分，多的一个就是图中的 receiver 部分。在 receiver
+部分声明的参数，Go 称之为 receiver 参数，这个 receiver
+参数也是方法与类型之间的纽带，也是方法与函数的最大不同。</p>
+<p>方法接收器（receiver）参数、函数 /
+方法参数，以及返回值变量对应的作用域范围，都是函数 /
+方法体对应的显式代码块。</p>
+<p>这就意味着，receiver
+部分的参数名不能与方法参数列表中的形参名，以及具名返回值中的变量名存在冲突，必须在这个方法的作用域中具有唯一性。如果这个不唯一不存在，比如像下面例子中那样，Go
+编译器就会报错：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> T <span class="hljs-keyword">struct</span>&#123;&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(t T)</span></span> M(t <span class="hljs-type">string</span>) &#123; <span class="hljs-comment">// 编译器报错：duplicate argument t (重复声明参数t)</span><br>    ... ...<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>不过，如果在方法体中，我们没有用到 receiver 参数，我们也可以省略
+receiver 的参数名，就像下面这样：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> T <span class="hljs-keyword">struct</span>&#123;&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(T)</span></span> M(t <span class="hljs-type">string</span>) &#123; <br>    ... ...<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>仅当方法体中的实现不需要 receiver 参数参与时，我们才会省略 receiver
+参数名。</p>
+<p>除了 receiver 参数名字要保证唯一外，Go 语言对 receiver
+参数的基类型也有约束，那就是 receiver
+参数的基类型本身不能为指针类型或接口类型。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> MyInt *<span class="hljs-type">int</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(r MyInt)</span></span> String() <span class="hljs-type">string</span> &#123; <span class="hljs-comment">// r的基类型为MyInt，编译器报错：invalid receiver type MyInt (MyInt is a pointer type)</span><br>    <span class="hljs-keyword">return</span> fmt.Sprintf(<span class="hljs-string">&quot;%d&quot;</span>, *(*<span class="hljs-type">int</span>)(r))<br>&#125;<br><br><span class="hljs-keyword">type</span> MyReader io.Reader<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(r MyReader)</span></span> Read(p []<span class="hljs-type">byte</span>) (<span class="hljs-type">int</span>, <span class="hljs-type">error</span>) &#123; <span class="hljs-comment">// r的基类型为MyReader，编译器报错：invalid receiver type MyReader (MyReader is an interface type)</span><br>    <span class="hljs-keyword">return</span> r.Read(p)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>Go 对方法声明的位置也是有约束的，Go 要求，方法声明要与 receiver
+参数的基类型声明放在同一个包内。基于这个约束，我们还可以得到两个推论。 *
+第一个推论：我们不能为原生类型（诸如 int、float64、map 等）添加方法。 *
+第二个推论：不能跨越 Go 包为其他包的类型声明新方法。</p>
+<h2 id="方法的本质">方法的本质</h2>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> T <span class="hljs-keyword">struct</span> &#123; <br>    a <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(t T)</span></span> Get() <span class="hljs-type">int</span> &#123;  <br>    <span class="hljs-keyword">return</span> t.a <br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(t *T)</span></span> Set(a <span class="hljs-type">int</span>) <span class="hljs-type">int</span> &#123; <br>    t.a = a <br>    <span class="hljs-keyword">return</span> t.a <br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>C++ 中的对象在调用方法时，编译器会自动传入指向对象自身的 this
+指针作为方法的第一个参数。而 Go 方法中的原理也是相似的，只不过我们是将
+receiver
+参数以第一个参数的身份并入到方法的参数列表中。按照这个原理，我们示例中的类型
+T 和 *T 的方法，就可以分别等价转换为下面的普通函数：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 类型T的方法Get的等价函数</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Get</span><span class="hljs-params">(t T)</span></span> <span class="hljs-type">int</span> &#123;  <br>    <span class="hljs-keyword">return</span> t.a <br>&#125;<br><br><span class="hljs-comment">// 类型*T的方法Set的等价函数</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Set</span><span class="hljs-params">(t *T, a <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> &#123; <br>    t.a = a <br>    <span class="hljs-keyword">return</span> t.a <br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这种等价转换后的函数的类型就是方法的类型。只不过在 Go
+语言中，这种等价转换是由 Go 编译器在编译和生成代码时自动完成的。Go
+语言规范中还提供了方法表达式（Method
+Expression）的概念，可以让我们更充分地理解上面的等价转换，我们来看一下。</p>
+<p>我们还以上面类型 T 以及它的方法为例，结合前面说过的 Go
+方法的调用方式，我们可以得到下面代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> t T<br>t.Get()<br>(&amp;t).Set(<span class="hljs-number">1</span>)<br></code></pre></div></td></tr></table></figure>
+<p>我们可以用另一种方式，把上面的方法调用做一个等价替换：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> t T<br>T.Get(t)<br>(*T).Set(&amp;t, <span class="hljs-number">1</span>)<br></code></pre></div></td></tr></table></figure>
+<p>这种直接以类型名 T 调用方法的表达方式，被称为 Method Expression。通过
+Method Expression 这种形式，类型 T 只能调用 T 的方法集合（Method
+Set）中的方法，同理类型 *T 也只能调用 *T 的方法集合中的方法。这种通过
+Method Expression
+对方法进行调用的方式，与我们之前所做的方法到函数的等价转换是如出一辙的。所以，Go
+语言中的方法的本质就是，一个以方法的 receiver
+参数作为第一个参数的普通函数。</p>
+<h2 id="receiver-参数类型对-go-方法的影响">receiver 参数类型对 Go
+方法的影响</h2>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(t T)</span></span> M1() &lt;=&gt; F1(t T)<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(t *T)</span></span> M2() &lt;=&gt; F2(t *T)<br></code></pre></div></td></tr></table></figure>
+<p>这个例子中有方法 M1 和 M2。M1 方法是 receiver 参数类型为 T
+的一类方法的代表，而 M2 方法则代表了 receiver 参数类型为 *T
+的另一类。下面我们分别来看看不同的 receiver 参数类型对 M1 和 M2
+的影响。</p>
+<ul>
+<li>首先，当 receiver 参数的类型为 T 时： 当我们选择以 T 作为 receiver
+参数类型时，M1 方法等价转换为F1(t T)。我们知道，Go
+函数的参数采用的是值拷贝传递，也就是说，F1 函数体中的 t 是 T
+类型实例的一个副本。这样，我们在 F1 函数的实现中对参数 t
+做任何修改，都只会影响副本，而不会影响到原 T 类型实例。</li>
+</ul>
+<p>据此我们可以得出结论：当我们的方法 M1 采用类型为 T 的 receiver
+参数时，代表 T 类型实例的 receiver 参数以值传递方式传递到 M1
+方法体中的，实际上是 T 类型实例的副本，M1
+方法体中对副本的任何修改操作，都不会影响到原 T 类型实例。</p>
+<ul>
+<li>第二，当 receiver 参数的类型为 *T 时： 当我们选择以 *T 作为 receiver
+参数类型时，M2 方法等价转换为F2(t *T)。同上面分析，我们传递给 F2 函数的
+t 是 T 类型实例的地址，这样 F2 函数体中对参数 t
+做的任何修改，都会反映到原 T 类型实例上。</li>
+</ul>
+<p>据此我们也可以得出结论：当我们的方法 M2 采用类型为 *T 的 receiver
+参数时，代表 *T 类型实例的 receiver 参数以值传递方式传递到 M2
+方法体中的，实际上是 T 类型实例的地址，M2 方法体通过该地址可以对原 T
+类型实例进行任何修改操作。</p>
+<h3 id="选择-receiver-参数类型的第一个原则">选择 receiver
+参数类型的第一个原则</h3>
+<p>基于上面的影响分析，我们可以得到选择 receiver
+参数类型的第一个原则：如果 Go 方法要把对 receiver
+参数代表的类型实例的修改，反映到原类型实例上，那么我们应该选择 *T 作为
+receiver 参数的类型。</p>
+<p>存在问题：如果我们选择了 *T 作为 Go 方法 receiver
+参数的类型，那么我们是不是只能通过 *T 类型变量调用该方法，而不能通过 T
+类型变量调用了呢？</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"> <span class="hljs-keyword">type</span> T <span class="hljs-keyword">struct</span> &#123;<br>     a <span class="hljs-type">int</span><br> &#125;<br> <br> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(t T)</span></span> M1() &#123;<br>     t.a = <span class="hljs-number">10</span><br> &#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(t *T)</span></span> M2() &#123;<br>    t.a = <span class="hljs-number">11</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> t1 T<br>    <span class="hljs-built_in">println</span>(t1.a) <span class="hljs-comment">// 0</span><br>    t1.M1()<br>    <span class="hljs-built_in">println</span>(t1.a) <span class="hljs-comment">// 0</span><br>    t1.M2()<br>    <span class="hljs-built_in">println</span>(t1.a) <span class="hljs-comment">// 11</span><br><br>    <span class="hljs-keyword">var</span> t2 = &amp;T&#123;&#125;<br>    <span class="hljs-built_in">println</span>(t2.a) <span class="hljs-comment">// 0</span><br>    t2.M1()<br>    <span class="hljs-built_in">println</span>(t2.a) <span class="hljs-comment">// 0</span><br>    t2.M2()<br>    <span class="hljs-built_in">println</span>(t2.a) <span class="hljs-comment">// 11</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>通过这个实例，我们知道了这样一个结论：无论是 T 类型实例，还是 *T
+类型实例，都既可以调用 receiver 为 T 类型的方法，也可以调用 receiver 为
+*T 类型的方法。这样，我们在为方法选择 receiver
+参数的类型的时候，就不需要担心这个方法不能被与 receiver
+参数类型不一致的类型实例调用了。</p>
+<h3 id="选择-receiver-参数类型的第二个原则">选择 receiver
+参数类型的第二个原则</h3>
+<p>考虑到 Go 方法调用时，receiver
+参数是以值拷贝的形式传入方法中的。那么，如果 receiver 参数类型的 size
+较大，以值拷贝形式传入就会导致较大的性能开销，这时我们选择 *T 作为
+receiver 类型可能更好些。</p>
+<h4 id="方法集合">方法集合</h4>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Interface <span class="hljs-keyword">interface</span> &#123;<br>    M1()<br>    M2()<br>&#125;<br><br><span class="hljs-keyword">type</span> T <span class="hljs-keyword">struct</span>&#123;&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(t T)</span></span> M1()  &#123;&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(t *T)</span></span> M2() &#123;&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> t T<br>    <span class="hljs-keyword">var</span> pt *T<br>    <span class="hljs-keyword">var</span> i Interface<br><br>    i = pt<br>    i = t <span class="hljs-comment">// cannot use t (type T) as type Interface in assignment: T does not implement Interface (M2 method has pointer receiver)</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>在这个例子中，我们定义了一个接口类型 Interface 以及一个自定义类型
+T。Interface 接口类型包含了两个方法 M1 和 M2，代码中还定义了基类型为 T
+的两个方法 M1 和 M2，但它们的 receiver 参数类型不同，一个为 T，另一个为
+*T。在 main 函数中，我们分别将 T 类型实例 t 和 *T 类型实例 pt 赋值给
+Interface 类型变量 i。运行一下这个示例程序，我们在i = t这一行会得到 Go
+编译器的错误提示，Go 编译器提示我们：T 没有实现 Interface
+类型方法列表中的 M2，因此类型 T 的实例 t 不能赋值给 Interface
+变量。有些事情并不是表面看起来这个样子的。了解方法集合后，这个问题就迎刃而解了。同时，方法集合也是用来判断一个类型是否实现了某接口类型的唯一手段，可以说，“方法集合决定了接口实现”。</p>
+<p>所谓的方法集合决定接口实现的含义就是：如果某类型 T
+的方法集合与某接口类型的方法集合相同，或者类型 T 的方法集合是接口类型 I
+方法集合的超集，那么我们就说这个类型 T 实现了接口
+I。或者说，方法集合这个概念在 Go
+语言中的主要用途，就是用来判断某个类型是否实现了某个接口。</p>
+<h3 id="选择-receiver-参数类型的第三个原则">选择 receiver
+参数类型的第三个原则</h3>
+<p>这个原则的选择依据就是 T 类型是否需要实现某个接口，也就是是否存在将 T
+类型的变量赋值给某接口类型变量的情况。如果 T
+类型需要实现某个接口，那我们就要使用 T 作为 receiver
+参数的类型，来满足接口类型方法集合中的所有方法。如果 T
+不需要实现某一接口，但 *T 需要实现该接口，那么根据方法集合概念，*T
+的方法集合是包含 T 的方法集合的，这样我们在确定 Go 方法的 receiver
+的类型时，参考原则一和原则二就可以了。</p>
+<h3 id="receiver-总结">receiver 总结</h3>
+<p>receiver 参数选型的三个经验原则，在实际进行 Go
+方法设计时，我们首先应该考虑的是原则三，即 T
+类型是否要实现某一接口。如果 T
+类型需要实现某一接口的全部方法，那么我们就需要使用 T 作为 receiver
+参数的类型来满足接口类型方法集合中的所有方法。如果 T
+类型不需要实现某一接口，那么我们就可以参考原则一和原则二来为 receiver
+参数选择类型了。也就是，如果 Go 方法要把对 receiver
+参数所代表的类型实例的修改反映到原类型实例上，那么我们应该选择 *T 作为
+receiver 参数的类型。否则通常我们会为 receiver 参数选择 T
+类型，这样可以减少外部修改类型实例内部状态的“渠道”。除非 receiver
+参数类型的 size 较大，考虑到传值的较大性能开销，选择 *T 作为 receiver
+类型可能更适合。</p>
+<p>方法集合。它在 Go
+语言中的主要用途就是判断某个类型是否实现了某个接口。方法集合像“胶水”一样，将自定义类型与接口隐式地“粘结”在一起，我们后面理解带有类型嵌入的类型时还会借助这个概念。</p>
+<h1 id="继承-类型嵌入">“继承” 类型嵌入</h1>
+<p>类型嵌入指的就是在一个类型的定义中嵌入了其他类型。Go
+语言支持两种类型嵌入，分别是接口类型的类型嵌入和结构体类型的类型嵌入。</p>
+<h2 id="接口类型的类型嵌入">接口类型的类型嵌入</h2>
+<p>我们先用一个案例，直观地了解一下什么是接口类型的类型嵌入。虽然我们现在还没有系统学习接口类型，但在前面的讲解中，我们已经多次接触了接口类型。我们知道，接口类型声明了由一个方法集合代表的接口，比如下面接口类型
+E：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> E <span class="hljs-keyword">interface</span> &#123;<br>    M1()<br>    M2()<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这个接口类型 E 的方法集合，包含两个方法，分别是 M1 和 M2，它们组成了
+E 这个接口类型所代表的接口。如果某个类型实现了方法 M1 和
+M2，我们就说这个类型实现了 E
+所代表的接口。此时，我们再定义另外一个接口类型
+I，它的方法集合中包含了三个方法 M1、M2 和 M3，如下面代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> I <span class="hljs-keyword">interface</span> &#123;<br>    M1()<br>    M2()<br>    M3()<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>我们看到接口类型 I 方法集合中的 M1 和 M2，与接口类型 E
+的方法集合中的方法完全相同。在这种情况下，我们可以用接口类型 E
+替代上面接口类型 I 定义中 M1 和 M2，如下面代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> I <span class="hljs-keyword">interface</span> &#123;<br>    E<br>    M3()<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>像这种在一个接口类型（I）定义中，嵌入另外一个接口类型（E）的方式，就是我们说的接口类型的类型嵌入。而且，这个带有类型嵌入的接口类型
+I 的定义与上面那个包含 M1、M2 和 M3 的接口类型 I
+的定义，是等价的。因此，我们可以得到一个结论，这种接口类型嵌入的语义就是新接口类型（如接口类型
+I）将嵌入的接口类型（如接口类型
+E）的方法集合，并入到自己的方法集合中。</p>
+<p>这也是 Go 组合设计哲学的一种体现</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOROOT/src/io/io.go</span><br><br><span class="hljs-keyword">type</span> Reader <span class="hljs-keyword">interface</span> &#123;<br>    Read(p []<span class="hljs-type">byte</span>) (n <span class="hljs-type">int</span>, err <span class="hljs-type">error</span>)<br>&#125;<br><br><span class="hljs-keyword">type</span> Writer <span class="hljs-keyword">interface</span> &#123;<br>    Write(p []<span class="hljs-type">byte</span>) (n <span class="hljs-type">int</span>, err <span class="hljs-type">error</span>)<br>&#125;<br><br><span class="hljs-keyword">type</span> Closer <span class="hljs-keyword">interface</span> &#123;<br>    Close() <span class="hljs-type">error</span><br>&#125;<br><br><span class="hljs-keyword">type</span> ReadWriter <span class="hljs-keyword">interface</span> &#123;<br>    Reader<br>    Writer<br>&#125;<br><br><span class="hljs-keyword">type</span> ReadCloser <span class="hljs-keyword">interface</span> &#123;<br>    Reader<br>    Closer<br>&#125;<br><br><span class="hljs-keyword">type</span> WriteCloser <span class="hljs-keyword">interface</span> &#123;<br>    Writer<br>    Closer<br>&#125;<br><br><span class="hljs-keyword">type</span> ReadWriteCloser <span class="hljs-keyword">interface</span> &#123;<br>    Reader<br>    Writer<br>    Closer<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>不过，这种通过嵌入其他接口类型来创建新接口类型的方式，在 Go 1.14
+版本之前是有约束的：如果新接口类型嵌入了多个接口类型，这些嵌入的接口类型的方法集合不能有交集，同时嵌入的接口类型的方法集合中的方法名字，也不能与新接口中的其他方法同名。</p>
+<h2 id="结构体类型的类型嵌入">结构体类型的类型嵌入</h2>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> S <span class="hljs-keyword">struct</span> &#123;<br>    A <span class="hljs-type">int</span><br>    b <span class="hljs-type">string</span><br>    c T<br>    p *P<br>    _ [<span class="hljs-number">10</span>]<span class="hljs-type">int8</span><br>    F <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>结构体类型 S
+中的每个字段（field）都有唯一的名字与对应的类型，即便是使用空标识符占位的字段，它的类型也是明确的，但这还不是
+Go 结构体类型的“完全体”。Go
+结构体类型定义还有另外一种形式，那就是带有嵌入字段（Embedded
+Field）的结构体定义。我们看下面这个例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> T1 <span class="hljs-type">int</span><br><span class="hljs-keyword">type</span> t2 <span class="hljs-keyword">struct</span>&#123;<br>    n <span class="hljs-type">int</span><br>    m <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-keyword">type</span> I <span class="hljs-keyword">interface</span> &#123;<br>    M1()<br>&#125;<br><br><span class="hljs-keyword">type</span> S1 <span class="hljs-keyword">struct</span> &#123;<br>    T1<br>    *t2<br>    I            <br>    a <span class="hljs-type">int</span><br>    b <span class="hljs-type">string</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>我们看到，结构体 S1 定义中有三个“非常规形式”的标识符，分别是 T1、t2
+和
+I，这三个标识符究竟代表的是什么呢？是字段名还是字段的类型呢？它们既代表字段的名字，也代表字段的类型。我们分别以这三个标识符为例，说明一下它们的具体含义：
+* 标识符 T1 表示字段名为 T1，它的类型为自定义类型 T1； * 标识符 t2
+表示字段名为 t2，它的类型为自定义结构体类型 t2 的指针类型； * 标识符 I
+表示字段名为 I，它的类型为接口类型 I。</p>
+<p>这种以某个类型名、类型的指针类型名或接口类型名，直接作为结构体字段的方式就叫做结构体的类型嵌入，这些字段也被叫做嵌入字段（Embedded
+Field）。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> MyInt <span class="hljs-type">int</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(n *MyInt)</span></span> Add(m <span class="hljs-type">int</span>) &#123;<br>    *n = *n + MyInt(m)<br>&#125;<br><br><span class="hljs-keyword">type</span> t <span class="hljs-keyword">struct</span> &#123;<br>    a <span class="hljs-type">int</span><br>    b <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-keyword">type</span> S <span class="hljs-keyword">struct</span> &#123;<br>    *MyInt<br>    t<br>    io.Reader<br>    s <span class="hljs-type">string</span><br>    n <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    m := MyInt(<span class="hljs-number">17</span>)<br>    r := strings.NewReader(<span class="hljs-string">&quot;hello, go&quot;</span>)<br>    s := S&#123;<br>        MyInt: &amp;m,<br>        t: t&#123;<br>            a: <span class="hljs-number">1</span>,<br>            b: <span class="hljs-number">2</span>,<br>        &#125;,<br>        Reader: r,<br>        s:      <span class="hljs-string">&quot;demo&quot;</span>,<br>    &#125;<br><br>    <span class="hljs-keyword">var</span> sl = <span class="hljs-built_in">make</span>([]<span class="hljs-type">byte</span>, <span class="hljs-built_in">len</span>(<span class="hljs-string">&quot;hello, go&quot;</span>))<br>    s.Reader.Read(sl)<br>    fmt.Println(<span class="hljs-type">string</span>(sl)) <span class="hljs-comment">// hello, go</span><br>    s.MyInt.Add(<span class="hljs-number">5</span>)<br>    fmt.Println(*(s.MyInt)) <span class="hljs-comment">// 22</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>首先，这个例子中的结构体类型 S
+使用了类型嵌入方式进行定义，它有三个嵌入字段 MyInt、t 和
+Reader。为什么第三个嵌入字段的名字为 Reader 而不是
+io.Reader？这是因为，Go
+语言规定如果结构体使用从其他包导入的类型作为嵌入字段，比如
+pkg.T，那么这个嵌入字段的字段名就是 T，代表的类型为 pkg.T。</p>
+<p>接下来，我们再来看结构体类型 S 的变量的初始化。我们使用 field:value
+方式对 S 类型的变量 s
+的各个字段进行初始化。和普通的字段一样，初始化嵌入字段时，我们可以直接用嵌入字段名作为
+field。</p>
+<p>而且，通过变量 s
+使用这些嵌入字段时，我们也可以像普通字段那样直接用变量s+字段选择符.+嵌入字段的名字，比如
+s.Reader。我们还可以通过这种方式调用嵌入字段的方法，比如 s.Reader.Read
+和 s.MyInt.Add。</p>
+<h2 id="实现继承的原理">“实现继承”的原理</h2>
+<p>我们将上面例子代码做一下细微改动，我这里只列了变化部分的代码
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> sl = <span class="hljs-built_in">make</span>([]<span class="hljs-type">byte</span>, <span class="hljs-built_in">len</span>(<span class="hljs-string">&quot;hello, go&quot;</span>))<br>s.Read(sl) <br>fmt.Println(<span class="hljs-type">string</span>(sl))<br>s.Add(<span class="hljs-number">5</span>) <br>fmt.Println(*(s.MyInt))<br></code></pre></div></td></tr></table></figure></p>
+<p>这段代码似乎在告诉我们：Read 方法与 Add 方法就是类型 S
+方法集合中的方法。但是，这里类型 S
+明明没有显式实现这两个方法呀，它是从哪里得到这两个方法的实现的呢？</p>
+<p>其实，这两个方法就来自结构体类型 S 的两个嵌入字段 Reader 和
+MyInt。结构体类型 S“继承”了 Reader 字段的方法 Read 的实现，也“继承”了
+*MyInt 的 Add
+方法的实现。注意，我这里的“继承”用了引号，说明这并不是真正的继承，它只是
+Go 语言的一种“障眼法”。</p>
+<p>这种“障眼法”的工作机制是这样的，当我们通过结构体类型 S 的变量 s 调用
+Read 方法时，Go 发现结构体类型 S 自身并没有定义 Read 方法，于是 Go
+会查看 S 的嵌入字段对应的类型是否定义了 Read 方法。这个时候，Reader
+字段就被找了出来，之后 s.Read 的调用就被转换为 s.Reader.Read
+调用。这样一来，嵌入字段 Reader 的 Read 方法就被提升为 S
+的方法，放入了类型 S 的方法集合。同理 *MyInt 的 Add 方法也被提升为 S
+的方法而放入 S
+的方法集合。从外部来看，这种嵌入字段的方法的提升就给了我们一种结构体类型
+S“继承”了 io.Reader 类型 Read 方法的实现，以及 *MyInt 类型 Add
+方法的实现的错觉。到这里，我们就清楚了，嵌入字段的使用的确可以帮我们在
+Go 中实现方法的“继承”</p>
+<p>[[Pasted image 20220405120810.png]]</p>
+<h2 id="类型嵌入与方法集合">类型嵌入与方法集合</h2>
+<p>在前面讲解接口类型的类型嵌入时，我们提到过接口类型的类型嵌入的本质，就是嵌入类型的方法集合并入到新接口类型的方法集合中，并且，接口类型只能嵌入接口类型。而结构体类型对嵌入类型的要求就比较宽泛了，可以是任意自定义类型或接口类型。</p>
+<h3 id="结构体类型中嵌入接口类型">结构体类型中嵌入接口类型</h3>
+<p>在结构体类型中嵌入接口类型后，结构体类型的方法集合会发生什么变化呢？我们通过下面这个例子来看一下：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> I <span class="hljs-keyword">interface</span> &#123;<br>    M1()<br>    M2()<br>&#125;<br><br><span class="hljs-keyword">type</span> T <span class="hljs-keyword">struct</span> &#123;<br>    I<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(T)</span></span> M3() &#123;&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> t T<br>    <span class="hljs-keyword">var</span> p *T<br>    dumpMethodSet(t)<br>    dumpMethodSet(p)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>运行这个示例，我们会得到以下结果：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go">main.T<span class="hljs-string">&#x27;s method set:</span><br><span class="hljs-string">- M1</span><br><span class="hljs-string">- M2</span><br><span class="hljs-string">- M3</span><br><span class="hljs-string"></span><br><span class="hljs-string">*main.T&#x27;</span>s method set:<br>- M1<br>- M2<br>- M3<br></code></pre></div></td></tr></table></figure>
+<p>我们可以看到，原本结构体类型 T 只带有一个方法 M3，但在嵌入接口类型 I
+后，结构体类型 T 的方法集合中又并入了接口类型 I 的方法集合。并且，由于
+*T 类型方法集合包括 T 类型的方法集合，因此无论是类型 T 还是类型
+*T，它们的方法集合都包含 M1、M2 和
+M3。于是我们可以得出一个结论：结构体类型的方法集合，包含嵌入的接口类型的方法集合。</p>
+<p>如果实现了，Go 就会优先使用结构体自己实现的方法。如果没有实现，那么
+Go
+就会查找结构体中的嵌入字段的方法集合中，是否包含了这个方法。如果多个嵌入字段的方法集合中都包含这个方法，那么我们就说方法集合存在交集。这个时候，Go
+编译器就会因无法确定究竟使用哪个方法而报错。那怎么解决这个问题呢？其实有两种解决方案。一是，我们可以消除
+E1 和 E2 方法集合存在交集的情况。二是为 T 增加 M1 和 M2
+方法的实现，这样的话，编译器便会直接选择 T 自己实现的 M1 和
+M2，不会陷入两难境地。</p>
+<h3 id="结构体类型中嵌入结构体类型">结构体类型中嵌入结构体类型</h3>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> T1 <span class="hljs-keyword">struct</span>&#123;&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(T1)</span></span> T1M1()   &#123; <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;T1&#x27;s M1&quot;</span>) &#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*T1)</span></span> PT1M2() &#123; <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;PT1&#x27;s M2&quot;</span>) &#125;<br><br><span class="hljs-keyword">type</span> T2 <span class="hljs-keyword">struct</span>&#123;&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(T2)</span></span> T2M1()   &#123; <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;T2&#x27;s M1&quot;</span>) &#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*T2)</span></span> PT2M2() &#123; <span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;PT2&#x27;s M2&quot;</span>) &#125;<br><br><span class="hljs-keyword">type</span> T <span class="hljs-keyword">struct</span> &#123;<br>    T1<br>    *T2<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    t := T&#123;<br>        T1: T1&#123;&#125;,<br>        T2: &amp;T2&#123;&#125;,<br>    &#125;<br><br>    dumpMethodSet(t)<br>    dumpMethodSet(&amp;t)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>在这个例子中，结构体类型 T 有两个嵌入字段，分别是 T1 和 *T2，我们知道
+T1 与 *T1、T2 与 *T2 的方法集合是不同的： T1 的方法集合包含：T1M1； *T1
+的方法集合包含：T1M1、PT1M2； T2 的方法集合包含：T2M1； *T2
+的方法集合包含：T2M1、PT2M2。</p>
+<p>它们作为嵌入字段嵌入到 T 中后，对 T 和 *T
+的方法集合的影响也是不同的。我们运行一下这个示例，看一下输出结果：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go">main.T<span class="hljs-string">&#x27;s method set:</span><br><span class="hljs-string">- PT2M2</span><br><span class="hljs-string">- T1M1</span><br><span class="hljs-string">- T2M1</span><br><span class="hljs-string"></span><br><span class="hljs-string">*main.T&#x27;</span>s method set:<br>- PT1M2<br>- PT2M2<br>- T1M1<br>- T2M1<br></code></pre></div></td></tr></table></figure>
+<p>通过输出结果，我们看到了 T 和 *T 类型的方法集合果然有差别的： 类型 T
+的方法集合 = T1 的方法集合 + *T2 的方法集合类型 *T 的方法集合 = *T1
+的方法集合 + *T2 的方法集合</p>
+<h2 id="defined-类型与-alias-类型的方法集合">defined 类型与 alias
+类型的方法集合</h2>
+<p>Go 语言中，凡通过类型声明语法声明的类型都被称为 defined
+类型，下面是一些 defined 类型的声明的例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> I <span class="hljs-keyword">interface</span> &#123;<br>    M1()<br>    M2()<br>&#125;<br><span class="hljs-keyword">type</span> T <span class="hljs-type">int</span><br><span class="hljs-keyword">type</span> NT T <span class="hljs-comment">// 基于已存在的类型T创建新的defined类型NT</span><br><span class="hljs-keyword">type</span> NI I <span class="hljs-comment">// 基于已存在的接口类型I创建新defined接口类型NI</span><br></code></pre></div></td></tr></table></figure>
+<p>对于那些基于接口类型创建的 defined
+的接口类型，它们的方法集合与原接口类型的方法集合是一致的。但对于基于非接口类型的
+defined 类型创建的非接口类型，我们通过下面例子来看一下：</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">type</span> T <span class="hljs-keyword">struct</span>&#123;&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(T)</span></span> M1()  &#123;&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*T)</span></span> M2() &#123;&#125;<br><br><span class="hljs-keyword">type</span> T1 T<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>  <span class="hljs-keyword">var</span> t T<br>  <span class="hljs-keyword">var</span> pt *T<br>  <span class="hljs-keyword">var</span> t1 T1<br>  <span class="hljs-keyword">var</span> pt1 *T1<br><br>  dumpMethodSet(t)<br>  dumpMethodSet(t1)<br><br>  dumpMethodSet(pt)<br>  dumpMethodSet(pt1)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>在这个例子中，我们基于一个 defined 的非接口类型 T 创建了新 defined
+类型 T1，并且分别输出 T1 和 *T1 的方法集合来确认它们是否“继承”了 T
+的方法集合。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go">main.T<span class="hljs-string">&#x27;s method set:</span><br><span class="hljs-string">- M1</span><br><span class="hljs-string"></span><br><span class="hljs-string">main.T1&#x27;</span>s method set is empty!<br><br>*main.T<span class="hljs-string">&#x27;s method set:</span><br><span class="hljs-string">- M1</span><br><span class="hljs-string">- M2</span><br><span class="hljs-string"></span><br><span class="hljs-string">*main.T1&#x27;</span>s method set is empty!<br></code></pre></div></td></tr></table></figure>
+<p>从输出结果上看，新类型 T1 并没有“继承”原 defined 类型 T
+的任何一个方法。从逻辑上来说，这也符合 T1 与 T
+是两个不同类型的语义。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> T <span class="hljs-keyword">struct</span>&#123;&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(T)</span></span> M1()  &#123;&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*T)</span></span> M2() &#123;&#125;<br><br><span class="hljs-keyword">type</span> T1 = T<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> t T<br>    <span class="hljs-keyword">var</span> pt *T<br>    <span class="hljs-keyword">var</span> t1 T1<br>    <span class="hljs-keyword">var</span> pt1 *T1<br><br>    dumpMethodSet(t)<br>    dumpMethodSet(t1)<br><br>    dumpMethodSet(pt)<br>    dumpMethodSet(pt1)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go">main.T<span class="hljs-string">&#x27;s method set:</span><br><span class="hljs-string">- M1</span><br><span class="hljs-string"></span><br><span class="hljs-string">main.T&#x27;</span>s method set:<br>- M1<br><br>*main.T<span class="hljs-string">&#x27;s method set:</span><br><span class="hljs-string">- M1</span><br><span class="hljs-string">- M2</span><br><span class="hljs-string"></span><br><span class="hljs-string">*main.T&#x27;</span>s method set:<br>- M1<br>- M2<br></code></pre></div></td></tr></table></figure>
+<p>通过这个输出结果，我们看到，我们的 dumpMethodSet
+函数甚至都无法识别出“类型别名”，无论类型别名还是原类型，输出的都是原类型的方法集合。由此我们可以得到一个结论：无论原类型是接口类型还是非接口类型，类型别名都与原类型拥有完全相同的方法集合。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/">Go语言学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Go/">Go</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022-05/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/">
+                        <span class="hidden-mobile">Go语言学习笔记-控制结构、函数</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        豫ICP备2022006334号-1
+      </a>
+    </span>
+    
+      
+        <span>
+          <a
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=41900102411004"
+            rel="nofollow noopener"
+            class="beian-police"
+            target="_blank"
+          >
+            
+              <span style="visibility: hidden; width: 0">|</span>
+              <img src="/images/system/beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+            
+            <span>豫公网安备 41900102411004号</span>
+          </a>
+        </span>
+      
+    
+  </div>
+
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
