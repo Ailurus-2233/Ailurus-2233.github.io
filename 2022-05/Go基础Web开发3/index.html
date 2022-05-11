@@ -1,0 +1,627 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/system/icon.jpg">
+  <link rel="icon" href="/images/system/icon.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Ailurus">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="根据b站课程BV143411a77p以及官方文档制作简单GoWeb项目的过程记录与相关笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go基础Web开发-RESTful API开发">
+<meta property="og:url" content="http://blog.ailurus2233.site/2022-05/Go%E5%9F%BA%E7%A1%80Web%E5%BC%80%E5%8F%913/index.html">
+<meta property="og:site_name" content="Ailurusの客栈">
+<meta property="og:description" content="根据b站课程BV143411a77p以及官方文档制作简单GoWeb项目的过程记录与相关笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-11T02:27:24.000Z">
+<meta property="article:modified_time" content="2022-05-11T12:10:46.928Z">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Web">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>Go基础Web开发-RESTful API开发 - Ailurusの客栈</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"blog.ailurus2233.site","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"|","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ailurus&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/system/background.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Go基础Web开发-RESTful API开发">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Ailurus
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-05-11 10:27" pubdate>
+        2022年5月11日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      7k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      59 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Go基础Web开发-RESTful API开发</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年5月11日 晚上
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="restful-api">RESTful API</h1>
+<p>API(Application Programming Interface)
+应用程序接口，简单的来说就是访问服务的地址与访问方式，以上个wiki项目举例通过浏览器访问<code>localhost:8080/view/xxx</code>就是一个服务的地址，我们请求的方式为<code>GET</code>请求，就能获取html文本来交给浏览器渲染。当然也有只请求值的数据型API，至于如何展示则只需要交给前端开发来处理了。本文也是以一个小项目为例，来简单实现RESTful
+API在Go中的开发过程。</p>
+<h1 id="参考文献管理系统">参考文献管理系统</h1>
+<h2 id="api服务设计">API服务设计</h2>
+<table>
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 11%" />
+<col style="width: 12%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">请求说明</th>
+<th style="text-align: center;">请求方式</th>
+<th style="text-align: center;">请求地址</th>
+<th style="text-align: center;">额外参数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">获取所有参考文献</td>
+<td style="text-align: center;">GET</td>
+<td style="text-align: center;">/bibs</td>
+<td style="text-align: center;">?f=gbt(格式化为GB/T 7714格式)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">获取指定id的一篇参考文献</td>
+<td style="text-align: center;">GET</td>
+<td style="text-align: center;">/bibs/:id</td>
+<td style="text-align: center;">?f=gbt(格式化为GB/T 7714格式)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">添加新的参考文献</td>
+<td style="text-align: center;">POST</td>
+<td style="text-align: center;">/bibs</td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<div class="note note-success">
+            <p>常用的请求方式 GET 获取资源，POST 新建资源，PUT 更新资源，DELETE删除资源</p>
+          </div>
+<h2 id="初始化项目">初始化项目</h2>
+<p>同样使用<code>go Module</code>工具初始化项目和管理依赖
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> bib<br><span class="hljs-built_in">cd</span> bib<br>go mod init bib<br></code></pre></div></td></tr></table></figure></p>
+<h2 id="定义数据结构">定义数据结构</h2>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Bibliography <span class="hljs-keyword">struct</span> &#123;<br>	ID        <span class="hljs-type">string</span><br>	Author    <span class="hljs-type">string</span><br>	Title     <span class="hljs-type">string</span><br>	Type      <span class="hljs-type">string</span> <span class="hljs-comment">// 文献类型</span><br>	Publisher <span class="hljs-type">string</span> <span class="hljs-comment">// 出版社或期刊</span><br>	Reference <span class="hljs-type">string</span> <span class="hljs-comment">// 引用页码</span><br><br>	Comment   <span class="hljs-type">string</span> <span class="hljs-comment">// 对于文献的注释</span><br>	Formatter <span class="hljs-type">string</span> <span class="hljs-comment">// 格式化的文本</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>其中Formatter需要由程序生成，用来支持不同场合不同格式的参考文献格式</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(b *Bibliography)</span></span> Format(formatter <span class="hljs-type">string</span>, idx <span class="hljs-type">int</span>) &#123;<br>    <span class="hljs-keyword">switch</span> formmatter &#123;<br>    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;gbt&quot;</span>:<br>        b.Formatter = fmt.Sprintf(<span class="hljs-string">&quot;[%v] %v. %v[%v]. %v:%v.&quot;</span>,<br>            idx, b.Author, b.Title, b.Type, b.Publisher, b.Reference)<br>    <span class="hljs-keyword">default</span>:<br>        b.Formatter = <span class="hljs-string">&quot;&quot;</span><br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这里还需要生成一些假的数据，可以使用mock.js来生成一些随机数据，虽然有些不对劲，但是可以先拿来用。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">&#123;<br>    <span class="hljs-string">&quot;list|20&quot;</span>:[<br>      &#123;<br>        <span class="hljs-string">&quot;ID&quot;</span>: <span class="hljs-string">&quot;@guid()&quot;</span>,<span class="hljs-comment">//ID</span><br>        <span class="hljs-string">&quot;Author&quot;</span>: <span class="hljs-string">&quot;@cname&quot;</span>,<br>        <span class="hljs-string">&quot;Title&quot;</span>: <span class="hljs-string">&quot;@ctitle()&quot;</span>,<br>        <span class="hljs-string">&quot;Type&quot;</span>: <span class="hljs-string">&quot;@integer(1,2)&quot;</span>,<br>        <span class="hljs-string">&quot;Publisher&quot;</span>: <span class="hljs-string">&quot;@name() publisher&quot;</span>,<br>        <span class="hljs-string">&quot;Reference&quot;</span>: <span class="hljs-string">&quot;@integer(1, 50), @integer(50, 100)&quot;</span>,<br><br>        <span class="hljs-string">&quot;Comment&quot;</span>: <span class="hljs-string">&quot;@cparagraph()&quot;</span>,<br>        <span class="hljs-string">&quot;Formatter&quot;</span>: <span class="hljs-string">&quot;&quot;</span><br>      &#125;<br>    ]<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h2 id="get-bibs-服务的实现">Get /bibs 服务的实现</h2>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getBibs</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;<br>    log.Println(r.Method, r.URL.String())<br>    formatter := r.URL.Query().Get(<span class="hljs-string">&quot;f&quot;</span>)<br>    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(bibs); i++ &#123;<br>        bibs[i].Format(formatter, i+<span class="hljs-number">1</span>)<br>    &#125;<br>    j, _ := json.MarshalIndent(bibs, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;      &quot;</span>)<br>    w.Write(j)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>获取显示参数是通过<code>r.URL.Query().Get(key)</code>的这个方式获取，<code>json.MarshalIndent(bibs, "", "   ")</code>的意思为，根据<code>bibs</code>构建一个Json字符串，另外两个参数是构成Json的缩进的，然后通过<code>w.Write()</code>返回给请求。</p>
+<h2 id="post-bibs-服务的实现">POST /bibs 服务的实现</h2>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">postBib</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;<br>    log.Println(r.Method, r.URL.String())<br>    <span class="hljs-keyword">var</span> newBib Bibliography<br>    body, _ := ioutil.ReadAll(r.Body)<br>    <span class="hljs-keyword">if</span> err := json.Unmarshal(body, &amp;newBib); err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-keyword">return</span><br>    &#125;<br>    bibs = <span class="hljs-built_in">append</span>(bibs, newBib)<br>    j, _ := json.MarshaIndent(newBib, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;      &quot;</span>)<br>    w.Write(j)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这里是使用<code>ioutil.ReadAll(r.Body)</code>读取请求中发送的数据，因为请求发送的是一个Json类型的字符串，所以可以通过<code>json.Unmarshal(string, *obj)</code>将Json字符串绑定到或者说解析到一个对象中。</p>
+<h2 id="get-bibsid-服务的实现">Get /bibs/:id 服务的实现</h2>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getBibsByID</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;<br>    log.Println(r.Method, r.URL.String(), fmt.Sprintf(<span class="hljs-string">&quot;id=%v&quot;</span>, id))<br>    id := r.URL.Path[<span class="hljs-built_in">len</span>(<span class="hljs-string">&quot;/bibs/&quot;</span>):]<br>    formatter := r.URL.Query().Get(<span class="hljs-string">&quot;f&quot;</span>)<br>    <span class="hljs-keyword">for</span> i, b := <span class="hljs-keyword">range</span> bibs &#123;<br>        <span class="hljs-keyword">if</span> b.ID == id &#123;<br>            b.Format(formatter, i+<span class="hljs-number">1</span>)<br>            j, _ := json.MarshalIndent(b, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;      &quot;</span>)<br>            w.Write(j)<br>            <span class="hljs-keyword">return</span><br>        &#125;<br>    &#125;<br>    j, _ := json.MarshalIndent(<br>        <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">string</span>&#123;<span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;bib not found&quot;</span>&#125;, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;      &quot;</span><br>    )<br>    w.Write(j)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这个方法多了一个获取子请求的步骤，这里只是简单的截取请求路径获取子请求参数。</p>
+<h2 id="注册handler">注册handler</h2>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    http.HandleFunc(<span class="hljs-string">&quot;/bibs/&quot;</span>, getBibsByID)<br>    http.HandleFunc(<span class="hljs-string">&quot;/bibs&quot;</span>, getBibs)<br>    http.HandleFunc(<span class="hljs-string">&quot;/bibs&quot;</span>, postBib)<br>    log.Fatal(http.ListenAndServe(<span class="hljs-string">&quot;localhost:8080&quot;</span>, <span class="hljs-literal">nil</span>))<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>其中<code>/bibs/</code>为监听<code>/bibs/xxx</code>这样的请求，<code>/bibs</code>监听的只有这个请求，但是这样写会有一个问题，handleFunc无法区分<code>GET</code>和<code>POST</code>请求，所以还需要写一个区分请求方式的函数。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">handleBibs</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;<br>    <span class="hljs-keyword">switch</span> r.Method &#123;<br>    <span class="hljs-keyword">case</span> http.MethodGet:<br>        getBibs(w, r)<br>    <span class="hljs-keyword">case</span> http.MethodPost:<br>        postBib(w, r)<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<h2 id="总结">总结</h2>
+<p>基于以上操作，便可以实现RESTful接口的开发，但是我们发现如果只通过Go标准库来实现逻辑复杂的话，那么代码将看起来会十分复杂冗余；那么这个时候就需要使用类似Java中springboot这类框架的第三方包，来减轻开发时的神智负担。</p>
+<h1 id="gin-包使用方法">Gin 包使用方法</h1>
+<h2 id="导入gin包">导入Gin包</h2>
+<p>在go文件的import中写入 <figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">import</span> (<br>    ...<br>    <span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span><br>    ...<br>)<br></code></pre></div></td></tr></table></figure></p>
+<p>然后执行<code>go mod tidy</code>，这样这个项目就导入Gin这个Web开发框架</p>
+<h2 id="gin的handler函数">Gin的Handler函数</h2>
+<p>Gin中Handler函数只需要传递一个<code>*gin.Context</code>类型的变量，下面是gin中<code>HandlerFunc()</code>的定义，这Context其实就是<code>http.ResponseWriter</code>和<code>http.Request</code>的整合，具体有哪些功能见下文描述。</p>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> HandlerFunc <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(*Context)</span></span><br></code></pre></div></td></tr></table></figure>
+<h2 id="重构get-bibs-服务">重构GET /bibs 服务</h2>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getBibs</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;<br>	formatter, _ := c.GetQuery(<span class="hljs-string">&quot;f&quot;</span>)<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(bibs); i++ &#123;<br>		bibs[i].Format(formatter, i+<span class="hljs-number">1</span>)<br>	&#125;<br>	c.IndentedJSON(http.StatusOK, bibs)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>获取显示参数的方式直接改为<code>c.GetQuery(key string)</code>，返回数据的方式也是通过<code>c.JSON(status, data)</code>的方式来简单实现的。</p>
+<h2 id="重构post-bibs-服务">重构POST /bibs 服务</h2>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">postBib</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;<br>	<span class="hljs-keyword">var</span> newBib Bibliography<br>	<span class="hljs-keyword">if</span> err := c.Bind(&amp;newBib); err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span><br>	&#125;<br>	bibs = <span class="hljs-built_in">append</span>(bibs, newBib)<br>	c.IndentedJSON(http.StatusCreated, bibs)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>获取数据的方式，直接使用<code>c.Bind(*)</code>来将请求中的数据绑定到对应的实例中，然后进行进一步的操作。</p>
+<h2 id="重构get-bibsid-服务">重构GET /bibs/:id 服务</h2>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getBibsById</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;<br>	id := c.Param(<span class="hljs-string">&quot;id&quot;</span>)<br>	formatter, _ := c.GetQuery(<span class="hljs-string">&quot;f&quot;</span>)<br>	<span class="hljs-keyword">for</span> i, b := <span class="hljs-keyword">range</span> bibs &#123;<br>		<span class="hljs-keyword">if</span> b.ID == id &#123;<br>			b.Format(formatter, i+<span class="hljs-number">1</span>)<br>			c.IndentedJSON(http.StatusOK, b)<br>			<span class="hljs-keyword">return</span><br>		&#125;<br>	&#125;<br>	c.IndentedJSON(http.StatusNotFound, gin.H&#123;<span class="hljs-string">&quot;error&quot;</span>: <span class="hljs-string">&quot;not found&quot;</span>&#125;)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这里有这样的一个操作<code>c.Param(key)</code>读取到传进来的id，但是这个获取显示参数还不太一样，这个操作需要配合<code>main()</code>中的注册函数来同一实现</p>
+<h2 id="mian-函数结构">mian() 函数结构</h2>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	router := gin.Default()<br>	router.GET(<span class="hljs-string">&quot;/bibs&quot;</span>, getBibs)<br>	router.GET(<span class="hljs-string">&quot;/bibs/:id&quot;</span>, getBibsById)<br>	router.POST(<span class="hljs-string">&quot;/bibs&quot;</span>, postBib)<br>	router.Run(<span class="hljs-string">&quot;localhost:8080&quot;</span>)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>这里使用<code>gin.Default()</code>来注册一个路由，路由注册请求的<code>GET</code>，<code>POST</code>，...等方法，和之前<code>http.HandleFunc()</code>一致，他能够将请求绑定到指定函数上，这个函数是前面说的Gin包中的<code>HandlerFunc(*Context)</code>实现。</p>
+<p>而且注意这个函数<code>router.GET("/bibs/:id", getBibsById)</code>，这里请求里加了一个<code>:id</code>，意思将子请求作为参数<code>id</code>，传入到函数中，在函数中通过<code>c.Param("id")</code>来获取这个信息。</p>
+<h1 id="总结-1">总结</h1>
+<p>这篇文章简单记录，一个RESTful
+API服务通过Go语言实现的具体流程与思路，与Java中SpringBoot类似Go中也有诸如Gin等方便API开发的框架，主要思路就是将对应的请求绑定到一个特定的函数上，通过这个函数来实现相应API定义的功能。</p>
+<h2 id="代码">代码</h2>
+<figure class="highlight go"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;net/http&quot;</span><br><br>	<span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> Bibliography <span class="hljs-keyword">struct</span> &#123;<br>	ID        <span class="hljs-type">string</span><br>	Author    <span class="hljs-type">string</span><br>	Title     <span class="hljs-type">string</span><br>	Type      <span class="hljs-type">string</span> <span class="hljs-comment">// 文献类型</span><br>	Publisher <span class="hljs-type">string</span> <span class="hljs-comment">// 出版社或期刊</span><br>	Reference <span class="hljs-type">string</span> <span class="hljs-comment">// 引用页码</span><br><br>	Comment   <span class="hljs-type">string</span> <span class="hljs-comment">// 对于文献的注释</span><br>	Formatter <span class="hljs-type">string</span> <span class="hljs-comment">// 格式化的文本</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(b *Bibliography)</span></span> Format(formatter <span class="hljs-type">string</span>, idx <span class="hljs-type">int</span>) &#123;<br>	<span class="hljs-keyword">switch</span> formatter &#123;<br>	<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;gbt&quot;</span>:<br>		b.Formatter = fmt.Sprintf(<span class="hljs-string">&quot;[%v] %v. %v[%v]. %v:%v.&quot;</span>,<br>			idx, b.Author, b.Title, b.Type, b.Publisher, b.Reference)<br>	<span class="hljs-keyword">default</span>:<br>		b.Formatter = <span class="hljs-string">&quot;&quot;</span><br>	&#125;<br>&#125;<br><br><span class="hljs-keyword">var</span> bibs = []Bibliography&#123;<br>    <span class="hljs-comment">//...</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getBibs</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;<br>	formatter, _ := c.GetQuery(<span class="hljs-string">&quot;f&quot;</span>)<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(bibs); i++ &#123;<br>		bibs[i].Format(formatter, i+<span class="hljs-number">1</span>)<br>	&#125;<br>	c.IndentedJSON(http.StatusOK, bibs)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">postBib</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;<br>	<span class="hljs-keyword">var</span> newBib Bibliography<br>	<span class="hljs-keyword">if</span> err := c.Bind(&amp;newBib); err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span><br>	&#125;<br>	bibs = <span class="hljs-built_in">append</span>(bibs, newBib)<br>	c.IndentedJSON(http.StatusCreated, bibs)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getBibsById</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;<br>	id := c.Param(<span class="hljs-string">&quot;id&quot;</span>)<br>	formatter, _ := c.GetQuery(<span class="hljs-string">&quot;f&quot;</span>)<br>	<span class="hljs-keyword">for</span> i, b := <span class="hljs-keyword">range</span> bibs &#123;<br>		<span class="hljs-keyword">if</span> b.ID == id &#123;<br>			b.Format(formatter, i+<span class="hljs-number">1</span>)<br>			c.IndentedJSON(http.StatusOK, b)<br>			<span class="hljs-keyword">return</span><br>		&#125;<br>	&#125;<br>	c.IndentedJSON(http.StatusNotFound, gin.H&#123;<span class="hljs-string">&quot;error&quot;</span>: <span class="hljs-string">&quot;not found&quot;</span>&#125;)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	router := gin.Default()<br>	router.GET(<span class="hljs-string">&quot;/bibs&quot;</span>, getBibs)<br>	router.GET(<span class="hljs-string">&quot;/bibs/:id&quot;</span>, getBibsById)<br>	router.POST(<span class="hljs-string">&quot;/bibs&quot;</span>, postBib)<br>	router.Run(<span class="hljs-string">&quot;localhost:8080&quot;</span>)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>可以发现，通过Gin来实现请求接口时十分方便简洁的。</p>
+<h2 id="参考资料">参考资料</h2>
+<ol type="1">
+<li><a
+target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1WF41137yb">这么萌的Go开发课程（3），真的不进来看一下嘛？[RESTful
+API 开发]</a></li>
+<li><a target="_blank" rel="noopener" href="https://go.dev/doc/tutorial/web-service-gin">Tutorial:
+Developing a RESTful API with Go and Gin</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/表现层状态转换">Wiki-表现层状态转换</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2011/09/restful.html">理解RESTful架构-阮一峰</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://github.com/gin-gonic/gin">gin-gonic/gin-github</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://blog.csdn.net/u012419550/article/details/108437927">Gin
+入门-CDFMLR-CSDN</a></li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Go-Web/">Go Web</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Go/">Go</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Web/">Web</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022-05/Go%E5%9F%BA%E7%A1%80Web%E5%BC%80%E5%8F%912/">
+                        <span class="hidden-mobile">Go基础Web开发-简单Wiki系统开发</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        豫ICP备2022006334号-1
+      </a>
+    </span>
+    
+      
+        <span>
+          <a
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=41900102411004"
+            rel="nofollow noopener"
+            class="beian-police"
+            target="_blank"
+          >
+            
+              <span style="visibility: hidden; width: 0">|</span>
+              <img src="/images/system/beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+            
+            <span>豫公网安备 41900102411004号</span>
+          </a>
+        </span>
+      
+    
+  </div>
+
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
