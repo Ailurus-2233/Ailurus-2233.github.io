@@ -18,18 +18,20 @@
   
     <meta name="description" content="摘要">
 <meta property="og:type" content="article">
-<meta property="og:title" content="软件供应链安全的概念、威胁及检测技术">
-<meta property="og:url" content="http://blog.ailurus2233.site/2022-05/%E8%BD%AF%E4%BB%B6%E4%BE%9B%E5%BA%94%E9%93%BE%E5%AE%89%E5%85%A8%E7%9A%84%E6%A6%82%E5%BF%B5%E3%80%81%E5%A8%81%E8%83%81%E5%8F%8A%E6%A3%80%E6%B5%8B%E6%8A%80%E6%9C%AF/index.html">
+<meta property="og:title" content="恶意代码检测汇报">
+<meta property="og:url" content="http://blog.ailurus2233.site/2022-05/%E6%81%B6%E6%84%8F%E4%BB%A3%E7%A0%81%E8%AF%86%E5%88%AB%E6%B1%87%E6%8A%A5/index.html">
 <meta property="og:site_name" content="Ailurusの客栈">
 <meta property="og:description" content="摘要">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-05-14T01:34:25.000Z">
-<meta property="article:modified_time" content="2022-05-23T09:40:48.700Z">
-<meta property="article:tag" content="供应链安全">
+<meta property="og:image" content="http://blog.ailurus2233.site/page/2022-05/传统恶意检测方法.png">
+<meta property="article:published_time" content="2022-05-23T08:57:53.000Z">
+<meta property="article:modified_time" content="2022-05-24T05:10:16.968Z">
+<meta property="article:tag" content="恶意代码检测">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://blog.ailurus2233.site/page/2022-05/传统恶意检测方法.png">
   
   
-  <title>软件供应链安全的概念、威胁及检测技术 - Ailurusの客栈</title>
+  <title>恶意代码检测汇报 - Ailurusの客栈</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -175,7 +177,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="软件供应链安全的概念、威胁及检测技术">
+            <span class="h2" id="subtitle" title="恶意代码检测汇报">
               
             </span>
 
@@ -190,8 +192,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-05-14 09:34" pubdate>
-        2022年5月14日 上午
+      <time datetime="2022-05-23 16:57" pubdate>
+        2022年5月23日 下午
       </time>
     </span>
   
@@ -201,7 +203,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      997 字
+      1.4k 字
     </span>
   
 
@@ -210,7 +212,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      9 分钟
+      12 分钟
     </span>
   
 
@@ -247,72 +249,33 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">软件供应链安全的概念、威胁及检测技术</h1>
+            <h1 style="display: none">恶意代码检测汇报</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：2022年5月23日 下午
+                  本文最后更新于：2022年5月24日 下午
                 
               </p>
             
             <div class="markdown-body">
-              <h1 id="供应链攻击案例">供应链攻击案例</h1>
-<h2 id="event-stream被植入比特币后门">event-stream被植入比特币后门</h2>
-<p>事件起因最早源于<code>event-stream</code>项目原作者<code>Dominictarr</code>因时间精力和兴趣受限，遂通过邮件交流方式，随意地将<code>event-stream</code>项目维护工作交给了另一位根本就不认识的开发者<code>Right9ctrl</code>，千万级下载量的开源项目就此托管给了陌生人。以下为<code>Riget9ctrl</code>添加恶意代码到被发现的流程：</p>
-<ol type="1">
-<li><code>Right9ctrl</code>释出了<code>event-stream</code> 3.3.6
-版本的更新，并在其中加入了一个之前完全没有的模块<code>flatmap-stream</code>，此时，这个模块中并没有恶意代码。</li>
-<li><code>Right9ctrl</code>删除了对<code>flatmap-stream</code>的引用并在<code>event-stram</code>中手动引用了这个方法，且将项目从3.3.6
-升级到了 4.0.0。</li>
-<li>名为<code>hugeglass</code>的用户把<code>flatmap-stream@0.1.1</code>
-版本推送到了 NPM项目，此次的更新中，就在
-<code>flatmap-stream@0.1.1/index.min.js</code> 末尾加入了恶意代码。</li>
-<li>由于 <code>event-stream</code>
-被node.js应用监视项目Nodemon引用，幸运的是，启动恶意代码所使用的一个API在Node
-10版本中被弃用了，用户 <code>jaydenseric</code> 在社区提出了疑问。</li>
-<li><code>Ayrton Sparling（FallingSnow）</code>发现<code>Nodemon</code>软件包上的错误是由<code>event-stream</code>导致的，并在相关引用文件中发现了异常代码，经社区人员共同协作，共同披露了此次事件。</li>
-</ol>
-<h2 id="xcodeghost事件">XcodeGhost事件</h2>
-<h1 id="软件供应链安全概述">软件供应链安全概述</h1>
-<p><strong>供应链</strong>：生产及流通过程中,涉及将产品或服务提供给最终客户的上游或下游企业，所形成的网链结构。</p>
-<p><strong>软件供应链</strong>：在软件的开发、交付、更新等环节,涉及将软件产品或服务提供给最终用户的上游或下游企业，所形成的网链结构。</p>
-<h2 id="软件供应链的主要环节模型">软件供应链的主要环节模型</h2>
-<h3 id="软件生命周期">软件生命周期</h3>
-<ol type="1">
-<li>开发环节:通过需求分析、设计、实现、测试等步骤，最终形成可用的形态</li>
-<li>交付环节:通过软件交付渠道将可用的软件从软件供应商转移至用户的过程</li>
-<li>使用环节:指用户使用软件的整个阶段,包括软件运行、维护升级和废弃等</li>
-</ol>
-<h2 id="供应链攻击分析">供应链攻击分析</h2>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: center;"></th>
-<th style="text-align: center;">传统攻击</th>
-<th style="text-align: center;">供应链攻击</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">攻击面</td>
-<td style="text-align: center;">系统本身</td>
-<td style="text-align: center;">上游软件、工具、环境</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">影响范围</td>
-<td style="text-align: center;">系统本身</td>
-<td style="text-align: center;">软件所有下游阶段及整条软件供应链</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">隐蔽性</td>
-<td style="text-align: center;">攻击行为自身的隐蔽性</td>
-<td style="text-align: center;">在供应链中经过多次传递隐蔽性增强</td>
-</tr>
-</tbody>
-</table>
-<h1 id="软件供应链威胁分析">软件供应链威胁分析</h1>
-<h1 id="软件供应链安全检测">软件供应链安全检测</h1>
-<p>基于源代码、二进制、不同语言的安全检测</p>
+              <h1 id="背景">背景</h1>
+<p>恶意软件是任何旨在损害计算机，服务器或计算机网络的软件。恶意软件在植入或以某种方式引入目标计算机后会造成损害，并可采取可执行代码，脚本，活动内容和其他软件的形式。该代码除计算机病毒，蠕虫，特洛伊木马，勒索软件，间谍软件，广告软件，恐慌软件外，还包括其他形式的恶意代码。</p>
+<p>一般来说，恶意软件的植入是分时间段的，放在软件的生命周期中来看，有预发布阶段和发布后阶段。内部威胁或者内部人员通常是唯一能够在将软件发布给最终用户之前将恶意软件插入软件的黑客类型。其他黑客人员或者组织在发布后阶段插入恶意软件。</p>
+<p>恶意软件在未明确提示用户或未经用户许可的情况下，在计算机上安装运行，一般具有下述行为的一种或多种：强制安装、浏览器劫持、窃取、修改用户数据、恶意收集用户信息、恶意卸载、恶意捆绑及其他侵犯用户知情权、选择权的恶意行为等。这些行为将严重侵犯用户合法权益，甚至将为用户及他人带来巨大的经济或其他形式的利益损失。所以，研究恶意软件检测技术，不仅仅是学术界的一个研究方向，也是维护网络世界安全的重要责任。</p>
+<h1 id="传统恶意软件检测与分析技术">传统恶意软件检测与分析技术</h1>
+<p>恶意软件检测技术的发展有几十年历史，各种技术及技术组合被用来检测和分类恶意软件。根据是否执行恶意软件代码，这些技术可以被粗略分为静态分析检测技术和动态分析检测技术。</p>
+<h2 id="静态分析检测技术">静态分析检测技术</h2>
+<p>静态分析不需要执行代码，一般利用被分析文件的字节特征对代码进行评判，具体特征包括文件结构信息、程序字符串常量、调用函数等，更深层次的会反汇编二进制文件以得到文件指令等信息。特征检测法属于早期主流的静态分析检测技术，很多传统反病毒产品都是采用此类技术。</p>
+<p><img src="/page/2022-05/传统恶意检测方法.png" srcset="/img/loading.gif" lazyload /></p>
+<p><strong>优点</strong>：这里的特征为描述文件的简单特征，如字符串、字节序列、文件名等特征；检测速度较快</p>
+<p><strong>缺点</strong>：恶意代码分析需要人为的判断；只能检测已有恶意代码，难以应对未知威胁；特征库往往泛化能力不足，容易受到混淆感染；特征库需要频繁更新；随着特征库更新检测效率会大幅降低；而且对文件是敏感的，如果恶意代码存在被感染的文件中，就可能无法命中。</p>
+<h2 id="动态分析与检测技术">动态分析与检测技术</h2>
+<p>动态分析与检测技术是指在被分析程序在运行的情况下，通过监控记录运行状态和行为，从中抽取动态特征进行检测和分类的方法，沙箱检测法是这种技术中最常见的一种。</p>
+<p>通过诱使程序在一个仿真的系统环境下运行，如果检测该程序存在可疑行为，则判定为恶意程序。具体分析将深入程序运行过程，可能会涉及内存分析、进程和系统服务分析以网络分析，需要对系统调用序列、API调用序列、注册表行为、文件行为、网络行为等进行监控，一旦发现结束反病毒软件进程、修改反病毒软件注册表、卸载其他进程主模块、反查杀行为、查找当前已存在的反病毒进程或者服务、挂全局消息钩子、将自己的文件载体拷贝到系统目录、主动向外界通讯、未经授权自动添加启动项以及启动服务、未经允许获取更高权限、修改浏览器的默认选项等可疑行为，则可能启动沙箱报警规则。</p>
+<p>由于动态分析检测方法根据运行时行为信息对恶意软件进行分析，因此与静态分析检测方法相比，动态分析具有更好的有效性和准确率，同时无需对待分析程序进行解包和反汇编操作。相对的，动态分析也有其缺点和不足，例如对待分析程序缺乏全局认识，通常仅关注程序运行时的小部分行为，依赖对程序行为的跟踪技术，一般需要一定的跟踪时长才能奏效，消耗计算资源较大。</p>
+<p><strong>优点</strong>：具有更好的有效性和准确率；无需进行解包和反汇编操作</p>
+<p><strong>缺点</strong>：需要对软件操作敏感；依赖对程序行为的跟踪技术，一般需要一定的跟踪时长才能奏效，消耗计算资源较大。</p>
+<h2 id="section"></h2>
 
             </div>
             <hr>
@@ -322,7 +285,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/%E4%BE%9B%E5%BA%94%E9%93%BE%E5%AE%89%E5%85%A8/">供应链安全</a>
+                      <a class="hover-with-bg" href="/categories/%E7%BB%84%E4%BC%9A%E6%B1%87%E6%8A%A5/">组会汇报</a>
                     
                   </div>
                 
@@ -330,7 +293,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E4%BE%9B%E5%BA%94%E9%93%BE%E5%AE%89%E5%85%A8/">供应链安全</a>
+                      <a class="hover-with-bg" href="/tags/%E6%81%B6%E6%84%8F%E4%BB%A3%E7%A0%81%E6%A3%80%E6%B5%8B/">恶意代码检测</a>
                     
                   </div>
                 
@@ -342,6 +305,29 @@
                   
                 </p>
               
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022-05/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%A2%98%E7%9B%AE/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算机网络面试题目</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022-05/Malware-Detection-by-Eating-a-Whole-EXE/">
+                        <span class="hidden-mobile">Malware Detection by Eating a Whole EXE 文章翻译</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
               
             </div>
 
